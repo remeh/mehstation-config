@@ -1,5 +1,6 @@
 #include <QtUiTools>
 #include <QFileDialog>
+#include <QMessageBox>
 #include <QWidget>
 #include <QAction>
 #include <iostream>
@@ -45,6 +46,7 @@ bool App::loadWindow() {
 void App::showWindow() {
 	Q_ASSERT(this->mainWidget != NULL);
 	this->mainWidget->show();
+	this->mainWidget->raise();
 }
 
 void App::onQuit() {
@@ -61,6 +63,13 @@ void App::onClickOpen() {
 
 void App::onFileSelected(const QString& filename) {
 	qDebug()  << filename;
+
+	QFile file(filename);
+	if (!file.exists()) {
+		QMessageBox msgBox(QMessageBox::Critical, "Error", "This file doesn't exist. Please select an existing database.");
+		msgBox.exec();
+		return;
+	}
 
 	// TODO Open the given database.
 }
