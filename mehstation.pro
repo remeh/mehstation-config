@@ -6,7 +6,7 @@
 #
 #-------------------------------------------------
 
-QT += core network gui
+QT += core network gui widgets uitools
 # C++0x yay!
 QMAKE_CXXFLAGS += -std=c++0x
 LIBS +=
@@ -19,5 +19,6 @@ MOC_DIR = build/
 UI_DIR = build/
 
 SOURCES += src/main.cpp \
+           src/app.cpp
 
-HEADERS +=
+HEADERS += src/app.h

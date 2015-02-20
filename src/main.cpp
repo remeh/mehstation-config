@@ -1,4 +1,10 @@
+#include "app.h"
 
 int main(int argc, char* argv[]) {
-	return 0;
+	App app(argc, argv);
+
+	app.loadWindow();
+	app.showWindow();
+
+	return app.exec();
 }
