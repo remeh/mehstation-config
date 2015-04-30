@@ -2,11 +2,11 @@
 #
 #   mehstation-config
 #
-#   remeh - me@remy.io
+#   Rémy 'remeh' Mathieu - me@remy.io
 #
 #-------------------------------------------------
 
-QT += core network gui widgets uitools
+QT += core network gui widgets uitools sql
 # C++0x yay!
 QMAKE_CXXFLAGS += -std=c++0x
 LIBS +=
@@ -19,6 +19,11 @@ MOC_DIR = build/
 UI_DIR = build/
 
 SOURCES += src/main.cpp \
-           src/app.cpp
+           src/app.cpp \
+           src/models/platform.cpp \
+           src/db.cpp
 
-HEADERS += src/app.h
+HEADERS += src/app.h \
+           src/models/model.h \
+           src/models/platform.h \
+           src/db.h

@@ -4,6 +4,8 @@
 #include <QFileDialog>
 #include <QString>
 
+#include "db.h"
+
 class App : public QApplication {
 		Q_OBJECT
 	public:
@@ -19,6 +21,9 @@ class App : public QApplication {
 
 		// The file dialog to open a database.
 		QFileDialog fileDialog;
+
+		// Database connection
+		Database db;
 
 	public slots:
 		void onClickQuit();

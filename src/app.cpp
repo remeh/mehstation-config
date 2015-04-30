@@ -5,6 +5,8 @@
 #include <QAction>
 #include <iostream>
 #include "app.h"
+#include "db.h"
+#include "models/platform.h"
 
 App::App(int & argc, char** argv) : QApplication(argc,argv) {
 	setApplicationName("mehstation-config");
@@ -71,5 +73,18 @@ void App::onFileSelected(const QString& filename) {
 		return;
 	}
 
-	// TODO Open the given database.
+	// open the database
+
+	db.open(filename);
+
+	QList<Platform>* platforms = db.getPlatforms();
+
+	Platform p;
+	foreach (p, *platforms) {
+		std::cout << p.name.toStdString() << std::endl;
+	}
+
+	if (platforms != nullptr) {
+		delete(platforms);
+	}
 }
