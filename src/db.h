@@ -3,6 +3,8 @@
 #include <QList>
 #include <QSqlDatabase>
 #include <QString>
+
+#include "models/executable.h"
 #include "models/platform.h"
 
 class Database {
@@ -13,6 +15,7 @@ class Database {
 		bool open(const QString& filename);
 
 		QList<Platform>* getPlatforms();
+		QList<Executable>* getExecutables(int platformId);
 
 	private:
 		QSqlDatabase db;

@@ -1,5 +1,6 @@
 #include <QtUiTools>
 #include <QFileDialog>
+#include <QListWidgetItem>
 #include <QMessageBox>
 #include <QWidget>
 #include <QAction>
@@ -8,12 +9,17 @@
 #include "db.h"
 #include "models/platform.h"
 
-App::App(int & argc, char** argv) : QApplication(argc,argv) {
+App::App(int & argc, char** argv) :
+	QApplication(argc,argv),
+	platforms(nullptr) {
 	setApplicationName("mehstation-config");
 	connect(this, SIGNAL(aboutToQuit()), SLOT(onQuit()));
 }
 
 App::~App() {
+	if (platforms != nullptr) {
+		delete platforms;
+	}
 }
 
 bool App::loadWindow() {
@@ -29,6 +35,10 @@ bool App::loadWindow() {
 		return false;
 	}
 
+	/*
+	 * Menu
+	 */
+
 	// Quit action
 	QAction* actionQuit = this->mainWidget->findChild<QAction*>("actionQuit");
 	connect(actionQuit, SIGNAL(triggered()), this, SLOT(onClickQuit()));
@@ -36,6 +46,13 @@ bool App::loadWindow() {
 	QAction* actionOpen = this->mainWidget->findChild<QAction*>("actionOpen");
 	connect(actionOpen, SIGNAL(triggered()), this, SLOT(onClickOpen()));
 	connect(&fileDialog, SIGNAL(fileSelected(const QString&)), this, SLOT(onFileSelected(const QString&)));
+
+	/*
+	 * Platforms list
+	 */
+	// Select an entry
+	QListWidget* listPlatforms = this->mainWidget->findChild<QListWidget*>("listPlatforms");
+	connect(listPlatforms, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(onPlatformSelected(QListWidgetItem*)));
 
 	// NOTE We forces the use of the non-native dialog because with the native
 	// NOTE the slot onFileSelected is called two times. - remy
@@ -63,6 +80,30 @@ void App::onClickOpen() {
 	this->fileDialog.show();
 }
 
+inline QListWidget* App::getPlatformListWidget() {
+	return this->mainWidget->findChild<QListWidget*>("listPlatforms");
+}
+
+void App::onPlatformSelected(QListWidgetItem* item) {
+	int id = item->data(MEH_ROLE_PLATFORM_ITEM).toInt();
+
+	// don't reload when it's the same one.
+	if (item == this->selectedPlatform) {
+		return;
+	}
+
+	// delete the previous data if any
+	if (this->selectedPlatform != nullptr && this->executables != nullptr) {
+		delete this->executables;
+	}
+
+	this->selectedPlatform = item;
+	
+	this->executables = this->db.getExecutables(item->data(MEH_ROLE_PLATFORM_ITEM).toInt());
+
+	qDebug() << id;
+}
+
 void App::onFileSelected(const QString& filename) {
 	qDebug()  << filename;
 
@@ -78,12 +119,17 @@ void App::onFileSelected(const QString& filename) {
 
 	QList<Platform>* platforms = db.getPlatforms();
 
-	Platform p;
-	foreach (p, *platforms) {
-		std::cout << p.name.toStdString() << std::endl;
-	}
+	QListWidget* listPlatforms = this->getPlatformListWidget();
 
 	if (platforms != nullptr) {
-		delete(platforms);
+		// store the list pointer
+		this->platforms = platforms;
+
+		// add all platforms in the view.
+		Platform p;
+		foreach (p, *platforms) {
+			PlatformItem* item = new PlatformItem(p.name, p.id);
+			listPlatforms->addItem(reinterpret_cast<QListWidgetItem*>(item));
+		}
 	}
 }
