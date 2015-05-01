@@ -1,3 +1,4 @@
+#include <QDebug>
 #include <QString>
 #include "platform.h"
 
@@ -10,4 +11,5 @@ Platform::Platform(int id, QString name, QString command, QString icon, QString 
 	command(command),
 	icon(icon),
 	background(background) {
+	qDebug() << "Platform" << name << "loaded from DB.";
 }

@@ -37,8 +37,8 @@ bool App::loadWindow() {
 	connect(actionOpen, SIGNAL(triggered()), this, SLOT(onClickOpen()));
 	connect(&fileDialog, SIGNAL(fileSelected(const QString&)), this, SLOT(onFileSelected(const QString&)));
 
-	// NOTE We forces the use of the non-native dialog because the native
-	// NOTE sometimes calls the slot onFileSelected is called two times. - remy
+	// NOTE We forces the use of the non-native dialog because with the native
+	// NOTE the slot onFileSelected is called two times. - remy
 	fileDialog.setOption(QFileDialog::DontUseNativeDialog, true);
 
 	file.close();
@@ -74,7 +74,6 @@ void App::onFileSelected(const QString& filename) {
 	}
 
 	// open the database
-
 	db.open(filename);
 
 	QList<Platform>* platforms = db.getPlatforms();
