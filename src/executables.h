@@ -20,10 +20,17 @@ class Executables : public QWidget {
 		Executable findExecutable(int id);
 
 	private:
+		void saveChangeState();
+
 		QList<Executable>* executables;
+
+		// true when something has been modified.
+		bool modifying;
 
 	public slots:
 		void onExecutableSelected(QListWidgetItem* item);
+		void onTextEdition();
+		void onSave();
 };
 
 // Specific items for the executable list, containing the name and the
