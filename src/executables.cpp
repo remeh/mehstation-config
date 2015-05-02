@@ -112,6 +112,8 @@ void Executables::onExecutableSelected(QListWidgetItem* item) {
 	QTextEdit* description = this->mainWidget->findChild<QTextEdit*>("textDescription");
 	description->setText(e.description);;
 
+	this->selectedExecutable = e;
+
 	this->modifying = false;
 	this->saveChangeState();
 }
@@ -130,7 +132,30 @@ void Executables::saveChangeState() {
 }
 
 void Executables::onSave() {
-	// TODO save the values of the executable
+	// update the executable values
+	QLineEdit* name = this->mainWidget->findChild<QLineEdit*>("editName");
+	QLineEdit* filepath = this->mainWidget->findChild<QLineEdit*>("editFilepath");
+	QLineEdit* genres = this->mainWidget->findChild<QLineEdit*>("editGenres");
+	QLineEdit* publisher = this->mainWidget->findChild<QLineEdit*>("editPublisher");
+	QLineEdit* developer = this->mainWidget->findChild<QLineEdit*>("editDeveloper");
+	QLineEdit* releaseDate = this->mainWidget->findChild<QLineEdit*>("editReleaseDate");
+	QLineEdit* players = this->mainWidget->findChild<QLineEdit*>("editPlayers");
+	QLineEdit* rating = this->mainWidget->findChild<QLineEdit*>("editRating");
+	QTextEdit* description = this->mainWidget->findChild<QTextEdit*>("textDescription");
+
+	this->selectedExecutable.displayName = name->text();
+	this->selectedExecutable.filepath = filepath->text();
+	this->selectedExecutable.genres = genres->text();
+	this->selectedExecutable.publisher = publisher->text();
+	this->selectedExecutable.developer = developer->text();
+	this->selectedExecutable.releaseDate = releaseDate->text();
+	this->selectedExecutable.players = players->text();
+	this->selectedExecutable.rating = rating->text();
+	this->selectedExecutable.description = description->toPlainText();
+
+	Database* db = this->app->getDb();
+	db->update(this->selectedExecutable);
+	
 	this->modifying = false;
 	this->saveChangeState();
 }

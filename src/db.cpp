@@ -124,3 +124,26 @@ QList<Executable>* Database::getExecutables(int platformId) {
 	q.clear();
 	return result;
 }
+
+void Database::update(Executable executable) {
+	QSqlQuery q;
+	q.prepare("update executable set display_name = :display_name, filepath = :filepath, description = :description, genres = :genres, players = :players, publisher = :publisher, developer = :developer, release_date = :release_date, rating = :rating where id = :id");
+	q.bindValue(":display_name", executable.displayName);
+	q.bindValue(":filepath", executable.filepath);
+	q.bindValue(":description", executable.description);
+	q.bindValue(":genres", executable.genres);
+	q.bindValue(":players", executable.players);
+	q.bindValue(":publisher", executable.publisher);
+	q.bindValue(":developer", executable.developer);
+	q.bindValue(":release_date", executable.releaseDate);
+	q.bindValue(":rating", executable.rating);
+	q.bindValue(":id", executable.id);
+	q.exec();
+	QSqlError error = q.lastError();
+	if (error.isValid()) {
+		QMessageBox msgBox(QMessageBox::Critical, "Error", QString("Can't update the executable: ").append(error.text()));
+		msgBox.exec();
+		qCritical() << "Error while updating an executable:" << error.text();
+	}
+	q.clear();
+}

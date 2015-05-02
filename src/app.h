@@ -19,6 +19,8 @@ class App : public QApplication {
 		bool loadWindow();
 		void showWindow();
 
+		Database* getDb() { return &(this->db); }
+
 	private:
 		// Main window read from window.ui
 		QWidget* mainWidget;

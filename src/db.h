@@ -17,6 +17,8 @@ class Database {
 		QList<Platform>* getPlatforms();
 		QList<Executable>* getExecutables(int platformId);
 
+		void update(Executable executablem);
+
 	private:
 		QSqlDatabase db;
 		bool opened;

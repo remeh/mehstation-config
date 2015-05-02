@@ -11,18 +11,17 @@ class Executables : public QWidget {
 	public:
 		Executables(App* app, QWidget* parent);
 		~Executables();
-		App* app;
-
-		QWidget* mainWidget;
 
 		void setExecutables(QList<Executable>* executables);
 
-		Executable findExecutable(int id);
-
 	private:
+		Executable findExecutable(int id);
 		void saveChangeState();
 
+		App* app;
+		QWidget* mainWidget;
 		QList<Executable>* executables;
+		Executable selectedExecutable;
 
 		// true when something has been modified.
 		bool modifying;
