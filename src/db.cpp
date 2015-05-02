@@ -24,6 +24,7 @@ bool Database::open(const QString& filename) {
 	db.setDatabaseName(filename);
 	if (!db.open()) {
 		QMessageBox msgBox(QMessageBox::Critical, "Error", "Can't open the database.");
+		msgBox.exec();
 	} else {
 		opened = true;
 	}
@@ -38,6 +39,8 @@ bool Database::open(const QString& filename) {
 		// The database looks to be in an inconsistent state.
 		// We should try to create it.
 		// TODO create the database.db file.
+		
+		opened = false;
 	}
 
 	return opened;
@@ -49,7 +52,7 @@ bool Database::open(const QString& filename) {
 // Returns nullptr if an error occurred.
 QList<Platform>* Database::getPlatforms() {
 	QSqlQuery q;
-	q.exec("select id, name, command, icon, background FROM platform");
+	q.exec("select id, name, command, icon, background FROM platform ORDER BY id");
 	QList<Platform>* result = new QList<Platform>;
 	while (q.next()) {
 		if (!q.isValid()) {
@@ -82,7 +85,7 @@ QList<Platform>* Database::getPlatforms() {
 // Returns nullptr if an error occurred.
 QList<Executable>* Database::getExecutables(int platformId) {
 	QSqlQuery q;
-	q.prepare("select id, display_name, filepath, description, genres, players, publisher, developer, release_date, rating FROM executable where platform_id = :platform_id");
+	q.prepare("select id, display_name, filepath, description, genres, players, publisher, developer, release_date, rating FROM executable where platform_id = :platform_id ORDER BY display_name");
 	q.bindValue(":platform_id", platformId);
 	q.exec();
 	QList<Executable>* result = new QList<Executable>;

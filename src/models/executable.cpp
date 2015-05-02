@@ -1,7 +1,17 @@
 #include <QString>
 #include "executable.h"
 
-Executable::Executable() {
+Executable::Executable() :
+	id(-1),
+	displayName(""),
+	filepath(""),
+	description(""),
+	genres(""),
+	players(""),
+	publisher(""),
+	developer(""),
+	releaseDate(""),
+	rating("") {
 }
 
 Executable::Executable(int id, QString displayName, QString filepath, QString description, QString genres,

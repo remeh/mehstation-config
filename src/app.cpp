@@ -8,6 +8,7 @@
 #include <iostream>
 #include "app.h"
 #include "db.h"
+#include "executables.h"
 #include "models/platform.h"
 
 App::App(int & argc, char** argv) :
@@ -99,26 +100,27 @@ void App::onPlatformSelected(QListWidgetItem* item) {
 
 	// store the selected item.
 	this->selectedPlatform = item;
-	
-	// load all the executables of this platform
-	this->executables = this->db.getExecutables(item->data(MEH_ROLE_PLATFORM_ITEM).toInt());
 
 	// create the executable widget.
 	if (this->executablesWidget != nullptr) {
 		delete this->executablesWidget;
 	}
 
-	QUiLoader loader;
+	QWidget* executablesTab = this->mainWidget->findChild<QWidget*>("executables");
+	Executables* executables = new Executables(this, NULL);
+	executablesTab->layout()->addWidget(executables);
+	// load all the executables of this platform and assign it to the widget.
+	executables->setExecutables(this->db.getExecutables(item->data(MEH_ROLE_PLATFORM_ITEM).toInt()));
+	this->executablesWidget = executables;
 
-	QFile uiFile("res/executable.ui");
-	uiFile.open(QFile::ReadOnly);
-
-	this->executablesWidget = loader.load(&uiFile, NULL);
-
-	QWidget* executables = this->mainWidget->findChild<QWidget*>("executables");
-	executables->layout()->addWidget(executablesWidget);
+	// enable the tab
+	QWidget* tabWidget = this->mainWidget->findChild<QWidget*>("tabWidget");
+	if (tabWidget) {
+		tabWidget->setEnabled(true);
+	}	
 }
 
+// onFileSelected called when a database file has been selected.
 void App::onFileSelected(const QString& filename) {
 	qDebug()  << filename;
 
@@ -144,7 +146,7 @@ void App::onFileSelected(const QString& filename) {
 		Platform p;
 		foreach (p, *platforms) {
 			PlatformItem* item = new PlatformItem(p.name, p.id);
-			listPlatforms->addItem(reinterpret_cast<QListWidgetItem*>(item));
+			listPlatforms->addItem(item);
 		}
 	}
 }
