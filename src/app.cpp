@@ -1,5 +1,6 @@
 #include <QtUiTools>
 #include <QFileDialog>
+#include <QLayout>
 #include <QListWidgetItem>
 #include <QMessageBox>
 #include <QWidget>
@@ -11,6 +12,7 @@
 
 App::App(int & argc, char** argv) :
 	QApplication(argc,argv),
+	executablesWidget(nullptr),
 	platforms(nullptr) {
 	setApplicationName("mehstation-config");
 	connect(this, SIGNAL(aboutToQuit()), SLOT(onQuit()));
@@ -85,8 +87,6 @@ inline QListWidget* App::getPlatformListWidget() {
 }
 
 void App::onPlatformSelected(QListWidgetItem* item) {
-	int id = item->data(MEH_ROLE_PLATFORM_ITEM).toInt();
-
 	// don't reload when it's the same one.
 	if (item == this->selectedPlatform) {
 		return;
@@ -97,11 +97,26 @@ void App::onPlatformSelected(QListWidgetItem* item) {
 		delete this->executables;
 	}
 
+	// store the selected item.
 	this->selectedPlatform = item;
 	
+	// load all the executables of this platform
 	this->executables = this->db.getExecutables(item->data(MEH_ROLE_PLATFORM_ITEM).toInt());
 
-	qDebug() << id;
+	// create the executable widget.
+	if (this->executablesWidget != nullptr) {
+		delete this->executablesWidget;
+	}
+
+	QUiLoader loader;
+
+	QFile uiFile("res/executable.ui");
+	uiFile.open(QFile::ReadOnly);
+
+	this->executablesWidget = loader.load(&uiFile, NULL);
+
+	QWidget* executables = this->mainWidget->findChild<QWidget*>("executables");
+	executables->layout()->addWidget(executablesWidget);
 }
 
 void App::onFileSelected(const QString& filename) {

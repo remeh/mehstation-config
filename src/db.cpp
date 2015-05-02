@@ -117,7 +117,6 @@ QList<Executable>* Database::getExecutables(int platformId) {
 						release_date.value().toString(),
 						rating.value().toString()
 						));
-		qDebug() << display_name.value().toString();
 	}
 	q.clear();
 	return result;

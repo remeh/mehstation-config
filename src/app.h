@@ -20,8 +20,11 @@ class App : public QApplication {
 		void showWindow();
 
 	private:
-		// Main window
+		// Main window read from window.ui
 		QWidget* mainWidget;
+
+		// Executables widget containing all the executables for a platform
+		QWidget* executablesWidget;
 
 		// The file dialog to open a database.
 		QFileDialog fileDialog;

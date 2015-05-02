@@ -77,13 +77,13 @@
         </property>
         <widget class="QWidget" name="executables">
          <attribute name="title">
-          <string>Tab 1</string>
+          <string>Executables</string>
          </attribute>
          <layout class="QVBoxLayout" name="verticalLayout"/>
         </widget>
         <widget class="QWidget" name="settings">
          <attribute name="title">
-          <string>Tab 2</string>
+          <string>Platform settings</string>
          </attribute>
         </widget>
        </widget>
