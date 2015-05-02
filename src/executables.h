@@ -3,6 +3,7 @@
 #include <QListWidgetItem>
 
 #include "app.h"
+#include "models/executable.h"
 
 #define MEH_ROLE_EXEC_ID 1002
 
@@ -17,6 +18,7 @@ class Executables : public QWidget {
 	private:
 		Executable findExecutable(int id);
 		void saveChangeState();
+		void updateInternalExecutables(Executable executable);
 
 		App* app;
 		QWidget* mainWidget;

@@ -155,9 +155,25 @@ void Executables::onSave() {
 
 	Database* db = this->app->getDb();
 	db->update(this->selectedExecutable);
+
+	this->updateInternalExecutables(this->selectedExecutable);
 	
 	this->modifying = false;
 	this->saveChangeState();
+}
+
+void Executables::updateInternalExecutables(Executable executable) {
+	for (int i = 0; i < this->executables->count(); i++) {
+		if (this->executables->at(i).id == executable.id) {
+			this->executables->replace(i, executable);
+			break;
+		}
+	}
+	QListWidget* listExecutables = this->mainWidget->findChild<QListWidget*>("listExecutables");
+	QListWidgetItem* item = listExecutables->currentItem();
+	if (item != NULL) {
+		item->setText(executable.displayName);
+	}
 }
 
 Executable Executables::findExecutable(int id) {
