@@ -1,11 +1,13 @@
 #include <QDebug>
 #include <QFile>
+#include <QFileDialog>
 #include <QImage>
 #include <QLabel>
 #include <QLayout>
 #include <QLineEdit>
 #include <QListWidget>
 #include <QPushButton>
+#include <QToolButton>
 #include <QRadioButton>
 #include <QStackedLayout>
 #include <QTextEdit>
@@ -36,6 +38,16 @@ Executables::Executables(App* app, QWidget* parent = NULL) :
 	QListWidget* listResources = this->mainWidget->findChild<QListWidget*>("listResources");
 	connect(listResources, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(onResourceSelected(QListWidgetItem*)));
 
+	QToolButton* resourceFilepathOpen = this->mainWidget->findChild<QToolButton*>("resourceFilepathOpen");
+	connect(resourceFilepathOpen, SIGNAL(clicked()), this, SLOT(onResourceFilepathClicked()));
+
+	QRadioButton* cover = this->mainWidget->findChild<QRadioButton*>("cover");
+	connect(cover, SIGNAL(clicked()), this, SLOT(onTypeChanged()));
+	QRadioButton* screenshot = this->mainWidget->findChild<QRadioButton*>("screenshot");
+	connect(screenshot, SIGNAL(clicked()), this, SLOT(onTypeChanged()));
+	QRadioButton* fanart = this->mainWidget->findChild<QRadioButton*>("fanart");
+	connect(fanart, SIGNAL(clicked()), this, SLOT(onTypeChanged()));
+
 	// connect each edit values to a "modifying" flag
 	QLineEdit* name = this->mainWidget->findChild<QLineEdit*>("editName");
 	QLineEdit* filepath = this->mainWidget->findChild<QLineEdit*>("editFilepath");
@@ -56,14 +68,45 @@ Executables::Executables(App* app, QWidget* parent = NULL) :
 	connect(rating, SIGNAL(textEdited(const QString&)), this, SLOT(onTextEdition()));
 	connect(description, SIGNAL(textChanged()), this, SLOT(onTextEdition()));
 
+	QPushButton* newResource = this->mainWidget->findChild<QPushButton*>("newResource");
+	connect(newResource, SIGNAL(clicked(bool)), this, SLOT(onNewResource()));
+
 	QPushButton* save = this->mainWidget->findChild<QPushButton*>("save");
 	connect(save, SIGNAL(clicked(bool)), this, SLOT(onSave()));
+
+	QPushButton* saveResource = this->mainWidget->findChild<QPushButton*>("saveResource");
+	connect(saveResource, SIGNAL(clicked(bool)), this, SLOT(onSaveResource()));
 }
 
 Executables::~Executables() {
 	if (this->executables != nullptr) {
 		delete this->executables;
 	}
+}
+
+void Executables::onNewResource() {
+	ExecutableResource res;
+	this->selectedExecutable.resources.append(res);
+	// TODO insert the new resource in DB and refresh the view
+}
+
+void Executables::onTypeChanged() {
+	QPushButton* saveResource = this->mainWidget->findChild<QPushButton*>("saveResource");
+	saveResource->setEnabled(true);
+}
+
+void Executables::onResourceFilepathClicked() {
+	QFileDialog fileDialog(this);
+	fileDialog.setOption(QFileDialog::DontUseNativeDialog, true);
+	connect(&fileDialog, SIGNAL(fileSelected(const QString&)), this, SLOT(onResourceFilepathSelected(const QString&)));
+	fileDialog.exec();	
+}
+
+void Executables::onResourceFilepathSelected(const QString& filepath) {
+	this->selectedResource.filepath = filepath;
+	QPushButton* saveResource = this->mainWidget->findChild<QPushButton*>("saveResource");
+	saveResource->setEnabled(true);
+	this->reloadResourceInfo();
 }
 
 void Executables::setExecutables(QList<Executable>* executables) {
@@ -82,8 +125,6 @@ void Executables::setExecutables(QList<Executable>* executables) {
 
 	// start by clearing the list
 	listExecutables->clear();
-
-	// TODO clear the entries
 	
 	// add all executables in the view.
 	Executable e;
@@ -96,10 +137,18 @@ void Executables::setExecutables(QList<Executable>* executables) {
 void Executables::onResourceSelected(QListWidgetItem* item) {
 	int id = item->data(MEH_ROLE_EXEC_ID).toInt();
 	ExecutableResource res = this->findResource(id);
+	this->selectedResource = res;
+	this->reloadResourceInfo();
+}
 
+void Executables::reloadResourceInfo() {
+	ExecutableResource res = this->selectedResource;
 	// set the fields.
 	QLineEdit* filepath = this->mainWidget->findChild<QLineEdit*>("resourceFilepath");
 	filepath->setText(res.filepath);
+	
+	QToolButton* resourceOpen = this->mainWidget->findChild<QToolButton*>("resourceFilepathOpen");
+	resourceOpen->setEnabled(true);
 
 	QRadioButton* cover = this->mainWidget->findChild<QRadioButton*>("cover");
 	QRadioButton* screenshot = this->mainWidget->findChild<QRadioButton*>("screenshot");
@@ -117,15 +166,19 @@ void Executables::onResourceSelected(QListWidgetItem* item) {
 		fanart->setChecked(true);
 	}
 
+	this->displayImage(res.filepath);
+
+}
+
+void Executables::displayImage(QString filepath) {
 	// display the image
 	QLabel* labelImage = this->mainWidget->findChild<QLabel*>("image");
-	QImage image(res.filepath);
+	QImage image(filepath);
 	QPixmap pixmap;
 	pixmap.convertFromImage(image);
 	if (!image.isNull()) {
 		labelImage->setPixmap(pixmap);
 		labelImage->setScaledContents(true);
-		labelImage->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
 	}
 }
 
@@ -159,7 +212,9 @@ void Executables::onExecutableSelected(QListWidgetItem* item) {
 	listResources->clear();
 	ExecutableResource er;
 	foreach (er, e.resources) {
-		ItemWithId* item = new ItemWithId(er.filepath, er.id);
+		QString text;
+		text.append(QString::number(er.id)).append(" - ").append(er.type);
+		ItemWithId* item = new ItemWithId(text, er.id);
 		listResources->addItem(item);
 	}
 
@@ -182,6 +237,34 @@ void Executables::saveChangeState() {
 	if (this->modifying) {
 		save->setEnabled(true);
 	}
+}
+
+void Executables::onSaveResource() {
+	// update the executable values
+	QLineEdit* filepath = this->mainWidget->findChild<QLineEdit*>("resourceFilepath");
+
+	this->selectedResource.filepath = filepath->text();
+
+	QRadioButton* cover = this->mainWidget->findChild<QRadioButton*>("cover");
+	QRadioButton* screenshot = this->mainWidget->findChild<QRadioButton*>("screenshot");
+	QRadioButton* fanart = this->mainWidget->findChild<QRadioButton*>("fanart");
+	if (cover->isChecked()) {
+		this->selectedResource.type = "cover";
+	}
+	if (screenshot->isChecked()) {
+		this->selectedResource.type = "screenshot";
+	}
+	if (fanart->isChecked()) {
+		this->selectedResource.type = "fanart";
+	}
+
+	Database* db = this->app->getDb();
+	db->update(this->selectedResource);
+
+	this->updateInternalResource(this->selectedResource);
+	
+	QPushButton* saveResource = this->mainWidget->findChild<QPushButton*>("saveResource");
+	saveResource->setEnabled(false);
 }
 
 void Executables::onSave() {
@@ -227,6 +310,22 @@ void Executables::updateInternalExecutables(Executable executable) {
 	if (item != NULL) {
 		item->setText(executable.displayName);
 	}
+}
+
+void Executables::updateInternalResource(ExecutableResource resource) {
+	QList<ExecutableResource> resources = this->selectedExecutable.resources;
+	for (int i = 0; i < resources.count(); i++) {
+		if (resources.at(i).id == resource.id) {
+			this->selectedExecutable.resources.replace(i, resource);
+			break;
+		}
+	}
+
+	QListWidget* listResources = this->mainWidget->findChild<QListWidget*>("listResources");
+	QListWidgetItem* item = listResources->currentItem();
+	QString text;
+	text.append(QString::number(resource.id)).append(" - ").append(resource.type);
+	item->setText(text);
 }
 
 ExecutableResource Executables::findResource(int id) {

@@ -5,6 +5,7 @@
 #include <QString>
 
 #include "models/executable.h"
+#include "models/executable_resource.h"
 #include "models/platform.h"
 
 class Database {
@@ -18,7 +19,8 @@ class Database {
 		QList<Executable>* getExecutables(int platformId);
 		QList<ExecutableResource> getExecutableResources(int executableId);
 
-		void update(Executable executablem);
+		void update(Executable executable);
+		void update(ExecutableResource resource);
 
 	private:
 		QSqlDatabase db;

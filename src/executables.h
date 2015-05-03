@@ -20,20 +20,29 @@ class Executables : public QWidget {
 		ExecutableResource findResource(int id);
 		void saveChangeState();
 		void updateInternalExecutables(Executable executable);
+		void updateInternalResource(ExecutableResource resource);
+		void displayImage(QString filepath);
+		void reloadResourceInfo();
 
 		App* app;
 		QWidget* mainWidget;
 		QList<Executable>* executables;
 		Executable selectedExecutable;
+		ExecutableResource selectedResource;
 
 		// true when something has been modified.
 		bool modifying;
 
 	public slots:
 		void onExecutableSelected(QListWidgetItem* item);
+		void onResourceFilepathClicked();
+		void onResourceFilepathSelected(const QString& filepath);
 		void onResourceSelected(QListWidgetItem* item);
+		void onNewResource();
+		void onTypeChanged();
 		void onTextEdition();
 		void onSave();
+		void onSaveResource();
 };
 
 // Specific items for the executable list, containing the name and the
