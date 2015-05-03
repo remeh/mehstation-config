@@ -11,6 +11,7 @@
 
 #include "db.h"
 #include "models/executable.h"
+#include "models/executable_resource.h"
 #include "models/platform.h"
 
 Database::Database() : opened(false) {
@@ -108,7 +109,7 @@ QList<Executable>* Database::getExecutables(int platformId) {
 		QSqlField release_date = record.field("release_date");
 		QSqlField rating = record.field("rating");
 
-		result->append(Executable(
+		Executable e = Executable(
 						id.value().toInt(),
 						display_name.value().toString(),
 						filepath.value().toString(),
@@ -119,7 +120,42 @@ QList<Executable>* Database::getExecutables(int platformId) {
 						developer.value().toString(),
 						release_date.value().toString(),
 						rating.value().toString()
-						));
+						);
+
+		e.resources = this->getExecutableResources(e.id);
+		result->append(e);
+	}
+	q.clear();
+	return result;
+}
+
+QList<ExecutableResource> Database::getExecutableResources(int executableId) {
+	QSqlQuery q;
+	q.prepare("select id, executable_id, filepath, type from executable_resource where executable_id = :executable_id");
+	q.bindValue("executable_id", executableId);
+	q.exec();
+	QSqlError error = q.lastError();
+	QList<ExecutableResource> result = QList<ExecutableResource>();
+
+	while (q.next()) {
+		if (!q.isValid()) {
+			QMessageBox msgBox(QMessageBox::Critical, "Error", QString("Can't load the executable resources: ").append(error.text()));
+			msgBox.exec();
+			qCritical() << "Error while loading executable resources:" << error.text();
+		}
+
+		QSqlRecord record = q.record();
+		QSqlField id = record.field("id");
+		QSqlField executable_id = record.field("executable_id");
+		QSqlField filepath = record.field("filepath");
+		QSqlField type = record.field("type");
+
+		ExecutableResource er;
+		er.id = id.value().toInt();
+		er.executableId = executable_id.value().toInt();
+		er.filepath = filepath.value().toString();
+		er.type = type.value().toString();
+		result.append(er);
 	}
 	q.clear();
 	return result;

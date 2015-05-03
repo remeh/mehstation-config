@@ -1,7 +1,9 @@
 #pragma once
 
+#include <QList>
 #include <QString>
 #include "model.h"
+#include "executable_resource.h"
 
 class Executable : public Model {
 	public:
@@ -20,6 +22,5 @@ class Executable : public Model {
 		QString releaseDate;
 		QString rating;
 
-		// TODO resources
-};
-
+		QList<ExecutableResource> resources;
+}; 

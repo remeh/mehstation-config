@@ -23,6 +23,7 @@ SOURCES += src/main.cpp \
            src/executables.cpp \
            src/models/platform.cpp \
            src/models/executable.cpp \
+           src/models/executable_resource.cpp \
            src/db.cpp
 
 HEADERS += src/app.h \
@@ -30,4 +31,5 @@ HEADERS += src/app.h \
            src/models/model.h \
            src/models/platform.h \
            src/models/executable.h \
+           src/models/executable_resource.h \
            src/db.h
