@@ -132,18 +132,20 @@ QList<Executable>* Database::getExecutables(int platformId) {
 QList<ExecutableResource> Database::getExecutableResources(int executableId) {
 	QSqlQuery q;
 	q.prepare("select id, executable_id, filepath, type from executable_resource where executable_id = :executable_id");
-	q.bindValue("executable_id", executableId);
+	q.bindValue(":executable_id", executableId);
 	q.exec();
-	QSqlError error = q.lastError();
+
 	QList<ExecutableResource> result = QList<ExecutableResource>();
 
-	while (q.next()) {
-		if (!q.isValid()) {
-			QMessageBox msgBox(QMessageBox::Critical, "Error", QString("Can't load the executable resources: ").append(error.text()));
-			msgBox.exec();
-			qCritical() << "Error while loading executable resources:" << error.text();
-		}
+	QSqlError error = q.lastError();
+	if (error.isValid()) {
+		QMessageBox msgBox(QMessageBox::Critical, "Error", QString("Can't load the executable resources: ").append(error.text()));
+		msgBox.exec();
+		qCritical() << "Error while loading executable resources:" << error.text();
+		return result;
+	}
 
+	while (q.next()) {
 		QSqlRecord record = q.record();
 		QSqlField id = record.field("id");
 		QSqlField executable_id = record.field("executable_id");

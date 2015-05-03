@@ -1,9 +1,12 @@
 #include <QDebug>
 #include <QFile>
+#include <QImage>
+#include <QLabel>
 #include <QLayout>
 #include <QLineEdit>
 #include <QListWidget>
 #include <QPushButton>
+#include <QRadioButton>
 #include <QStackedLayout>
 #include <QTextEdit>
 #include <QUiLoader>
@@ -11,6 +14,7 @@
 #include "app.h"
 #include "executables.h"
 #include "models/executable.h"
+#include "models/executable_resource.h"
 
 Executables::Executables(App* app, QWidget* parent = NULL) :
 	QWidget(parent),
@@ -29,6 +33,8 @@ Executables::Executables(App* app, QWidget* parent = NULL) :
 
 	QListWidget* listExecutables = this->mainWidget->findChild<QListWidget*>("listExecutables");
 	connect(listExecutables, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(onExecutableSelected(QListWidgetItem*)));
+	QListWidget* listResources = this->mainWidget->findChild<QListWidget*>("listResources");
+	connect(listResources, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(onResourceSelected(QListWidgetItem*)));
 
 	// connect each edit values to a "modifying" flag
 	QLineEdit* name = this->mainWidget->findChild<QLineEdit*>("editName");
@@ -82,8 +88,44 @@ void Executables::setExecutables(QList<Executable>* executables) {
 	// add all executables in the view.
 	Executable e;
 	foreach (e, *executables) {
-		ExecutableItem* item = new ExecutableItem(e.displayName, e.id);
+		ItemWithId* item = new ItemWithId(e.displayName, e.id);
 		listExecutables->addItem(item);
+	}
+}
+
+void Executables::onResourceSelected(QListWidgetItem* item) {
+	int id = item->data(MEH_ROLE_EXEC_ID).toInt();
+	ExecutableResource res = this->findResource(id);
+
+	// set the fields.
+	QLineEdit* filepath = this->mainWidget->findChild<QLineEdit*>("resourceFilepath");
+	filepath->setText(res.filepath);
+
+	QRadioButton* cover = this->mainWidget->findChild<QRadioButton*>("cover");
+	QRadioButton* screenshot = this->mainWidget->findChild<QRadioButton*>("screenshot");
+	QRadioButton* fanart = this->mainWidget->findChild<QRadioButton*>("fanart");
+	cover->setChecked(false);
+	screenshot->setChecked(false);
+	fanart->setChecked(false);
+	if (res.type == "cover") {
+		cover->setChecked(true);
+	}
+	if (res.type == "screenshot") {
+		screenshot->setChecked(true);
+	}
+	if (res.type == "fanart") {
+		fanart->setChecked(true);
+	}
+
+	// display the image
+	QLabel* labelImage = this->mainWidget->findChild<QLabel*>("image");
+	QImage image(res.filepath);
+	QPixmap pixmap;
+	pixmap.convertFromImage(image);
+	if (!image.isNull()) {
+		labelImage->setPixmap(pixmap);
+		labelImage->setScaledContents(true);
+		labelImage->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
 	}
 }
 
@@ -112,8 +154,19 @@ void Executables::onExecutableSelected(QListWidgetItem* item) {
 	QTextEdit* description = this->mainWidget->findChild<QTextEdit*>("textDescription");
 	description->setText(e.description);;
 
+	// set the resources
+	QListWidget* listResources = this->mainWidget->findChild<QListWidget*>("listResources");
+	listResources->clear();
+	ExecutableResource er;
+	foreach (er, e.resources) {
+		ItemWithId* item = new ItemWithId(er.filepath, er.id);
+		listResources->addItem(item);
+	}
+
 	this->selectedExecutable = e;
 
+	// ui states
+	
 	this->modifying = false;
 	this->saveChangeState();
 }
@@ -174,6 +227,21 @@ void Executables::updateInternalExecutables(Executable executable) {
 	if (item != NULL) {
 		item->setText(executable.displayName);
 	}
+}
+
+ExecutableResource Executables::findResource(int id) {
+	if (this->selectedExecutable.id == -1) {
+		return ExecutableResource();
+	}
+
+	ExecutableResource res;
+	foreach (res, this->selectedExecutable.resources) {
+		if (res.id == id) {
+			return res;
+		}
+	}
+
+	return ExecutableResource();
 }
 
 Executable Executables::findExecutable(int id) {

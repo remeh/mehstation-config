@@ -17,6 +17,7 @@ class Executables : public QWidget {
 
 	private:
 		Executable findExecutable(int id);
+		ExecutableResource findResource(int id);
 		void saveChangeState();
 		void updateInternalExecutables(Executable executable);
 
@@ -30,15 +31,16 @@ class Executables : public QWidget {
 
 	public slots:
 		void onExecutableSelected(QListWidgetItem* item);
+		void onResourceSelected(QListWidgetItem* item);
 		void onTextEdition();
 		void onSave();
 };
 
 // Specific items for the executable list, containing the name and the
 // ID is in the data QVariant.
-class ExecutableItem : public QListWidgetItem {
+class ItemWithId : public QListWidgetItem {
 	public:
-		ExecutableItem(const QString& text, int id)
+		ItemWithId(const QString& text, int id)
 			: QListWidgetItem(text) {
 			this->id = id;			
 		}
