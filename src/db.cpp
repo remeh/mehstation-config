@@ -163,6 +163,28 @@ QList<ExecutableResource> Database::getExecutableResources(int executableId) {
 	return result;
 }
 
+ExecutableResource Database::createNewResource(int executableId) {
+	ExecutableResource res;
+
+	QSqlQuery q;
+	q.prepare("create executable_resource (executable_id) VALUES (:executable_id)");
+	q.bindValue(":executable_id", executableId);
+	q.exec();
+	QSqlError error = q.lastError();
+	if (error.isValid()) {
+		QMessageBox msgBox(QMessageBox::Critical, "Error", QString("Can't update the executable resource: ").append(error.text()));
+		msgBox.exec();
+		qCritical() << "Error while updating an executable resource:" << error.text();
+		return res;
+	}
+	q.clear();
+
+	QVariant lastId = q.lastInsertId();
+	res.id = lastId.toInt();
+	res.executableId = executableId;
+	return res;
+}
+
 void Database::update(ExecutableResource resource) {
 	QSqlQuery q;
 	q.prepare("update executable_resource set filepath = :filepath, type = :type where id = :id");

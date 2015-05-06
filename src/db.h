@@ -18,6 +18,7 @@ class Database {
 		QList<Platform>* getPlatforms();
 		QList<Executable>* getExecutables(int platformId);
 		QList<ExecutableResource> getExecutableResources(int executableId);
+		ExecutableResource createNewResource(int executableId);
 
 		void update(Executable executable);
 		void update(ExecutableResource resource);
