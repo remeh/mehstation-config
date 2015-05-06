@@ -19,10 +19,12 @@ class Executables : public QWidget {
 		Executable findExecutable(int id);
 		ExecutableResource findResource(int id);
 		void saveChangeState();
+		void removeResourceFromExecutable(ExecutableResource resource);
 		void updateInternalExecutables(Executable executable);
 		void updateInternalResource(ExecutableResource resource);
 		void displayImage(QString filepath);
 		void reloadResourceInfo();
+		void clearResource();
 
 		App* app;
 		QWidget* mainWidget;
@@ -39,6 +41,7 @@ class Executables : public QWidget {
 		void onResourceFilepathSelected(const QString& filepath);
 		void onResourceSelected(QListWidgetItem* item);
 		void onNewResource();
+		void onDeleteResource();
 		void onTypeChanged();
 		void onTextEdition();
 		void onSave();

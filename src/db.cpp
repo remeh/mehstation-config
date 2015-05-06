@@ -163,6 +163,20 @@ QList<ExecutableResource> Database::getExecutableResources(int executableId) {
 	return result;
 }
 
+void Database::deleteResource(int resourceId) {
+	QSqlQuery q;
+	q.prepare("delete from executable_resource where id = :resource_id");
+	q.bindValue(":resource_id", resourceId);
+	q.exec();
+	QSqlError error = q.lastError();
+	if (error.isValid()) {
+		QMessageBox msgBox(QMessageBox::Critical, "Error", QString("Can't delete an executable resource: ").append(error.text()));
+		msgBox.exec();
+		qCritical() << "Error while deleting an executable resource:" << error.text();
+	}
+	q.clear();
+}
+
 ExecutableResource Database::createNewResource(int executableId) {
 	ExecutableResource res;
 
@@ -174,7 +188,7 @@ ExecutableResource Database::createNewResource(int executableId) {
 	if (error.isValid()) {
 		QMessageBox msgBox(QMessageBox::Critical, "Error", QString("Can't create a new executable resource: ").append(error.text()));
 		msgBox.exec();
-		qCritical() << "Error while create an executable resource:" << error.text();
+		qCritical() << "Error while creating an executable resource:" << error.text();
 		return res;
 	}
 

@@ -71,6 +71,9 @@ Executables::Executables(App* app, QWidget* parent = NULL) :
 	QPushButton* newResource = this->mainWidget->findChild<QPushButton*>("newResource");
 	connect(newResource, SIGNAL(clicked(bool)), this, SLOT(onNewResource()));
 
+	QPushButton* deleteResource = this->mainWidget->findChild<QPushButton*>("deleteResource");
+	connect(deleteResource, SIGNAL(clicked(bool)), this, SLOT(onDeleteResource()));
+
 	QPushButton* save = this->mainWidget->findChild<QPushButton*>("save");
 	connect(save, SIGNAL(clicked(bool)), this, SLOT(onSave()));
 
@@ -100,6 +103,38 @@ void Executables::onNewResource() {
 	listResources->addItem(item);
 	listResources->setCurrentItem(item); // select the item
 
+	this->clearResource();
+
+	// activate the filepath selection
+	QToolButton* resourceOpen = this->mainWidget->findChild<QToolButton*>("resourceFilepathOpen");
+	resourceOpen->setEnabled(true);
+}
+
+void Executables::onDeleteResource() {
+	QListWidget* listResources = this->mainWidget->findChild<QListWidget*>("listResources");
+	this->app->getDb()->deleteResource(this->selectedResource.id);
+	this->removeResourceFromExecutable(this->selectedResource);
+	delete listResources->currentItem();
+	this->clearResource();
+
+	if (listResources->currentItem() != NULL) {
+		onResourceSelected(listResources->currentItem());
+	}
+}
+
+void Executables::onTypeChanged() {
+	QPushButton* saveResource = this->mainWidget->findChild<QPushButton*>("saveResource");
+	saveResource->setEnabled(true);
+}
+
+void Executables::onResourceFilepathClicked() {
+	QFileDialog fileDialog(this);
+	fileDialog.setOption(QFileDialog::DontUseNativeDialog, true);
+	connect(&fileDialog, SIGNAL(fileSelected(const QString&)), this, SLOT(onResourceFilepathSelected(const QString&)));
+	fileDialog.exec();	
+}
+
+void Executables::clearResource() {
 	// empty the filepath and unselect the type
 	QRadioButton* cover = this->mainWidget->findChild<QRadioButton*>("cover");
 	QRadioButton* screenshot = this->mainWidget->findChild<QRadioButton*>("screenshot");
@@ -118,21 +153,8 @@ void Executables::onNewResource() {
 	QLineEdit* resourceFilepath = this->mainWidget->findChild<QLineEdit*>("resourceFilepath");
 	resourceFilepath->setText("");
 
-	// activate the filepath selection
-	QToolButton* resourceOpen = this->mainWidget->findChild<QToolButton*>("resourceFilepathOpen");
-	resourceOpen->setEnabled(true);
-}
-
-void Executables::onTypeChanged() {
-	QPushButton* saveResource = this->mainWidget->findChild<QPushButton*>("saveResource");
-	saveResource->setEnabled(true);
-}
-
-void Executables::onResourceFilepathClicked() {
-	QFileDialog fileDialog(this);
-	fileDialog.setOption(QFileDialog::DontUseNativeDialog, true);
-	connect(&fileDialog, SIGNAL(fileSelected(const QString&)), this, SLOT(onResourceFilepathSelected(const QString&)));
-	fileDialog.exec();	
+	QLabel* labelImage = this->mainWidget->findChild<QLabel*>("image");
+	labelImage->clear();
 }
 
 void Executables::onResourceFilepathSelected(const QString& filepath) {
@@ -172,6 +194,8 @@ void Executables::onResourceSelected(QListWidgetItem* item) {
 	ExecutableResource res = this->findResource(id);
 	this->selectedResource = res;
 	this->reloadResourceInfo();
+	QPushButton* deleteResource = this->mainWidget->findChild<QPushButton*>("deleteResource");
+	deleteResource->setEnabled(true);
 }
 
 void Executables::reloadResourceInfo() {
@@ -359,6 +383,25 @@ void Executables::updateInternalResource(ExecutableResource resource) {
 	QString text;
 	text.append(QString::number(resource.id)).append(" - ").append(resource.type);
 	item->setText(text);
+}
+
+void Executables::removeResourceFromExecutable(ExecutableResource resource) {
+	QList<ExecutableResource> resources = this->selectedExecutable.resources;
+	for (int i = 0; i < resources.count(); i++) {
+		if (resources.at(i).id == resource.id) {
+			QList<ExecutableResource> resources = this->selectedExecutable.resources;
+			resources.removeAt(i);
+			this->selectedExecutable.resources = resources;
+
+			for (int j = 0; j < executables->count(); j++) {
+				if (executables->at(j).id == this->selectedExecutable.id) {
+					executables->replace(j, this->selectedExecutable);
+				}
+			}
+
+			break;
+		}
+	}
 }
 
 ExecutableResource Executables::findResource(int id) {
