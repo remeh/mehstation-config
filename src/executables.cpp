@@ -85,9 +85,42 @@ Executables::~Executables() {
 }
 
 void Executables::onNewResource() {
-	ExecutableResource res;
+	// only create a resource if we're really in an executable
+	if (this->selectedExecutable.id == -1) {
+		return;
+	}
+	ExecutableResource res = this->app->getDb()->createNewResource(this->selectedExecutable.id);
 	this->selectedExecutable.resources.append(res);
-	// TODO insert the new resource in DB and refresh the view
+
+	// add the item in the list of resources
+	QListWidget* listResources = this->mainWidget->findChild<QListWidget*>("listResources");
+	QString text;
+	text.append(QString::number(res.id)).append(" - ");
+	ItemWithId* item = new ItemWithId(text, res.id);
+	listResources->addItem(item);
+	listResources->setCurrentItem(item); // select the item
+
+	// empty the filepath and unselect the type
+	QRadioButton* cover = this->mainWidget->findChild<QRadioButton*>("cover");
+	QRadioButton* screenshot = this->mainWidget->findChild<QRadioButton*>("screenshot");
+	QRadioButton* fanart = this->mainWidget->findChild<QRadioButton*>("fanart");
+
+	cover->setAutoExclusive(false);
+	screenshot->setAutoExclusive(false);
+	fanart->setAutoExclusive(false);
+	cover->setChecked(false);
+	screenshot->setChecked(false);
+	fanart->setChecked(false);
+	cover->setAutoExclusive(true);
+	screenshot->setAutoExclusive(true);
+	fanart->setAutoExclusive(true);
+
+	QLineEdit* resourceFilepath = this->mainWidget->findChild<QLineEdit*>("resourceFilepath");
+	resourceFilepath->setText("");
+
+	// activate the filepath selection
+	QToolButton* resourceOpen = this->mainWidget->findChild<QToolButton*>("resourceFilepathOpen");
+	resourceOpen->setEnabled(true);
 }
 
 void Executables::onTypeChanged() {

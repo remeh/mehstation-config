@@ -167,21 +167,23 @@ ExecutableResource Database::createNewResource(int executableId) {
 	ExecutableResource res;
 
 	QSqlQuery q;
-	q.prepare("create executable_resource (executable_id) VALUES (:executable_id)");
+	q.prepare("insert into executable_resource (executable_id) VALUES (:executable_id)");
 	q.bindValue(":executable_id", executableId);
 	q.exec();
 	QSqlError error = q.lastError();
 	if (error.isValid()) {
-		QMessageBox msgBox(QMessageBox::Critical, "Error", QString("Can't update the executable resource: ").append(error.text()));
+		QMessageBox msgBox(QMessageBox::Critical, "Error", QString("Can't create a new executable resource: ").append(error.text()));
 		msgBox.exec();
-		qCritical() << "Error while updating an executable resource:" << error.text();
+		qCritical() << "Error while create an executable resource:" << error.text();
 		return res;
 	}
-	q.clear();
 
 	QVariant lastId = q.lastInsertId();
 	res.id = lastId.toInt();
+	qDebug() << "New resource id:" << res.id;
 	res.executableId = executableId;
+
+	q.clear();
 	return res;
 }
 
