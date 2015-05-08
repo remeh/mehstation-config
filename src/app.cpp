@@ -88,18 +88,26 @@ inline QListWidget* App::getPlatformListWidget() {
 }
 
 void App::onPlatformSelected(QListWidgetItem* item) {
-	// don't reload when it's the same one.
-	if (item == this->selectedPlatform) {
+	if (item == NULL || platforms == NULL) {
 		return;
 	}
 
-	// delete the previous data if any
-	if (this->selectedPlatform != nullptr && this->executables != nullptr) {
-		delete this->executables;
+	// look for the platform in the list of loaded platforms.
+	Platform p;
+	Platform clickedPlatform;
+	foreach (p, *platforms) {
+		if (p.id == item->data(MEH_ROLE_PLATFORM_ITEM).toInt()) {
+			clickedPlatform = p;
+			break;
+		}
 	}
 
-	// store the selected item.
-	this->selectedPlatform = item;
+	// same platform, stop here.
+	if (clickedPlatform.id == this->selectedPlatform.id)   {
+		return;
+	}
+
+	this->selectedPlatform = clickedPlatform;
 
 	// create the executable widget.
 	if (this->executablesWidget != nullptr) {
@@ -110,7 +118,7 @@ void App::onPlatformSelected(QListWidgetItem* item) {
 	Executables* executables = new Executables(this, NULL);
 	executablesTab->layout()->addWidget(executables);
 	// load all the executables of this platform and assign it to the widget.
-	executables->setExecutables(this->db.getExecutables(item->data(MEH_ROLE_PLATFORM_ITEM).toInt()));
+	executables->setExecutables(this->db.getExecutables(this->selectedPlatform.id));
 	this->executablesWidget = executables;
 
 	// enable the tab

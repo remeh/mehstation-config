@@ -33,9 +33,9 @@ Executables::Executables(App* app, QWidget* parent = NULL) :
 	this->setLayout(new QStackedLayout());
 	this->layout()->addWidget(this->mainWidget);
 
-	QListWidget* listExecutables = this->mainWidget->findChild<QListWidget*>("listExecutables");
+	QListWidget* listExecutables = this->getListExecutables();
 	connect(listExecutables, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(onExecutableSelected(QListWidgetItem*)));
-	QListWidget* listResources = this->mainWidget->findChild<QListWidget*>("listResources");
+	QListWidget* listResources = this->getListResources();
 	connect(listResources, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(onResourceSelected(QListWidgetItem*)));
 
 	QToolButton* resourceFilepathOpen = this->mainWidget->findChild<QToolButton*>("resourceFilepathOpen");
@@ -74,6 +74,9 @@ Executables::Executables(App* app, QWidget* parent = NULL) :
 	QPushButton* deleteResource = this->mainWidget->findChild<QPushButton*>("deleteResource");
 	connect(deleteResource, SIGNAL(clicked(bool)), this, SLOT(onDeleteResource()));
 
+	QPushButton* deleteExecutable = this->mainWidget->findChild<QPushButton*>("deleteExecutable");
+	connect(deleteExecutable, SIGNAL(clicked(bool)), this, SLOT(onDeleteExecutable()));
+
 	QPushButton* save = this->mainWidget->findChild<QPushButton*>("save");
 	connect(save, SIGNAL(clicked(bool)), this, SLOT(onSave()));
 
@@ -87,6 +90,34 @@ Executables::~Executables() {
 	}
 }
 
+void Executables::onNewExecutable() {
+}
+
+void Executables::onDeleteExecutable() {
+	if (this->selectedExecutable.id == -1) {
+		return;
+	}
+
+	this->app->getDb()->deleteExecutable(this->selectedExecutable);
+
+	// delete the executable from the current list of executable
+	for (int i = 0; i < this->executables->count(); i++) {
+		if (this->executables->at(i).id == this->selectedExecutable.id) {
+			this->executables->removeAt(i);
+			break;
+		}
+	}
+
+	// delete the entry from the list
+	QListWidget* listExecutables = this->getListExecutables();
+	delete listExecutables->currentItem();
+
+	// load the currently selected item (which has changed due to the deletion)
+	if (listExecutables->currentItem() != NULL) {
+		this->onExecutableSelected(listExecutables->currentItem());
+	}
+}
+
 void Executables::onNewResource() {
 	// only create a resource if we're really in an executable
 	if (this->selectedExecutable.id == -1) {
@@ -96,10 +127,10 @@ void Executables::onNewResource() {
 	this->selectedExecutable.resources.append(res);
 
 	// add the item in the list of resources
-	QListWidget* listResources = this->mainWidget->findChild<QListWidget*>("listResources");
 	QString text;
 	text.append(QString::number(res.id)).append(" - ");
 	ItemWithId* item = new ItemWithId(text, res.id);
+	QListWidget* listResources = this->getListResources();
 	listResources->addItem(item);
 	listResources->setCurrentItem(item); // select the item
 
@@ -111,7 +142,7 @@ void Executables::onNewResource() {
 }
 
 void Executables::onDeleteResource() {
-	QListWidget* listResources = this->mainWidget->findChild<QListWidget*>("listResources");
+	QListWidget* listResources = this->getListResources();
 	this->app->getDb()->deleteResource(this->selectedResource.id);
 	this->removeResourceFromExecutable(this->selectedResource);
 	delete listResources->currentItem();
@@ -172,7 +203,7 @@ void Executables::setExecutables(QList<Executable>* executables) {
 	this->executables = executables;
 
 	// fill the list
-	QListWidget* listExecutables = this->mainWidget->findChild<QListWidget*>("listExecutables");
+	QListWidget* listExecutables = this->getListExecutables();
 	if (listExecutables == NULL) {
 		qCritical() << "Can't retrieve the listExecutables.";
 		return;
@@ -263,6 +294,7 @@ void Executables::onExecutableSelected(QListWidgetItem* item) {
 	rating->setText(e.players);;
 	QTextEdit* description = this->mainWidget->findChild<QTextEdit*>("textDescription");
 	description->setText(e.description);;
+	QPushButton* deleteExecutable = this->mainWidget->findChild<QPushButton*>("deleteExecutable");
 
 	// set the resources
 	QListWidget* listResources = this->mainWidget->findChild<QListWidget*>("listResources");
@@ -281,6 +313,7 @@ void Executables::onExecutableSelected(QListWidgetItem* item) {
 	
 	this->modifying = false;
 	this->saveChangeState();
+	deleteExecutable->setEnabled(true);
 }
 
 void Executables::onTextEdition() {
@@ -362,7 +395,7 @@ void Executables::updateInternalExecutables(Executable executable) {
 			break;
 		}
 	}
-	QListWidget* listExecutables = this->mainWidget->findChild<QListWidget*>("listExecutables");
+	QListWidget* listExecutables = this->getListExecutables();
 	QListWidgetItem* item = listExecutables->currentItem();
 	if (item != NULL) {
 		item->setText(executable.displayName);
@@ -378,7 +411,7 @@ void Executables::updateInternalResource(ExecutableResource resource) {
 		}
 	}
 
-	QListWidget* listResources = this->mainWidget->findChild<QListWidget*>("listResources");
+	QListWidget* listResources = this->getListResources();
 	QListWidgetItem* item = listResources->currentItem();
 	QString text;
 	text.append(QString::number(resource.id)).append(" - ").append(resource.type);

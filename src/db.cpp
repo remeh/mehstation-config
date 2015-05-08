@@ -163,6 +163,32 @@ QList<ExecutableResource> Database::getExecutableResources(int executableId) {
 	return result;
 }
 
+void Database::deleteExecutable(Executable executable) {
+	if (executable.id == -1) {
+		return;
+	}
+	
+	// first we want to delete each resource.
+	// for cleaner code, we'll reuse deleteResource
+	for (int i = 0; i < executable.resources.count(); i++) {
+		ExecutableResource res = executable.resources.at(i);
+		this->deleteResource(res.id);
+	}
+
+	// finally delete the executable
+	QSqlQuery q;
+	q.prepare("delete from executable where id = :exec_id");
+	q.bindValue(":exec_id", executable.id);
+	q.exec();
+	QSqlError error = q.lastError();
+	if (error.isValid()) {
+		QMessageBox msgBox(QMessageBox::Critical, "Error", QString("Error while deleting an executable : ").append(error.text()));
+		msgBox.exec();
+		qCritical() << "Error while deleting an executable:" << error.text();
+	}
+	q.clear();
+}
+
 void Database::deleteResource(int resourceId) {
 	QSqlQuery q;
 	q.prepare("delete from executable_resource where id = :resource_id");

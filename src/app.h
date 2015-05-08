@@ -41,7 +41,7 @@ class App : public QApplication {
 		QList<Executable>* executables;
 
 		// Currently selected platform.
-		QListWidgetItem* selectedPlatform;
+		Platform selectedPlatform;
 
 		// Returns the platform list widget.
 		inline QListWidget* getPlatformListWidget();

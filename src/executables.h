@@ -1,5 +1,6 @@
 #include <QList>
 #include <QWidget>
+#include <QListWidget>
 #include <QListWidgetItem>
 
 #include "app.h"
@@ -26,6 +27,14 @@ class Executables : public QWidget {
 		void reloadResourceInfo();
 		void clearResource();
 
+		QListWidget* getListResources() {
+			return this->mainWidget->findChild<QListWidget*>("listResources");
+		}
+
+		QListWidget* getListExecutables() {
+			return this->mainWidget->findChild<QListWidget*>("listExecutables");
+		}
+
 		App* app;
 		QWidget* mainWidget;
 		QList<Executable>* executables;
@@ -40,7 +49,9 @@ class Executables : public QWidget {
 		void onResourceFilepathClicked();
 		void onResourceFilepathSelected(const QString& filepath);
 		void onResourceSelected(QListWidgetItem* item);
+		void onNewExecutable();
 		void onNewResource();
+		void onDeleteExecutable();
 		void onDeleteResource();
 		void onTypeChanged();
 		void onTextEdition();
