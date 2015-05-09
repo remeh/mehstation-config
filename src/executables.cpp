@@ -211,6 +211,9 @@ void Executables::clearResource() {
 
 	QLabel* labelImage = this->mainWidget->findChild<QLabel*>("image");
 	labelImage->clear();
+
+	QPushButton* saveResource = this->mainWidget->findChild<QPushButton*>("saveResource");
+	saveResource->setEnabled(false);
 }
 
 void Executables::onResourceFilepathSelected(const QString& filepath) {
@@ -297,6 +300,9 @@ void Executables::displayImage(QString filepath) {
 
 void Executables::onExecutableSelected(QListWidgetItem* item) {
 	int id = item->data(MEH_ROLE_EXEC_ID).toInt();
+
+	// start by cleaning the view.
+	this->clearResource();
 
 	Executable e = this->findExecutable(id);
 	

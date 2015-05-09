@@ -31,6 +31,8 @@ class App : public QApplication {
 
 		// Executables widget containing all the executables for a platform
 		QWidget* executablesWidget;
+		// Platform settings
+		QWidget* settingsWidget;
 
 		// The file dialog to open a database.
 		QFileDialog fileDialog;

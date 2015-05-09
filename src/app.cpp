@@ -9,11 +9,13 @@
 #include "app.h"
 #include "db.h"
 #include "executables.h"
+#include "settings.h"
 #include "models/platform.h"
 
 App::App(int & argc, char** argv) :
 	QApplication(argc,argv),
 	executablesWidget(nullptr),
+	settingsWidget(nullptr),
 	platforms(nullptr) {
 	setApplicationName("mehstation-config");
 	connect(this, SIGNAL(aboutToQuit()), SLOT(onQuit()));
@@ -113,6 +115,9 @@ void App::onPlatformSelected(QListWidgetItem* item) {
 	if (this->executablesWidget != nullptr) {
 		delete this->executablesWidget;
 	}
+	if (this->settingsWidget != nullptr) {
+		delete this->settingsWidget;
+	}
 
 	QWidget* executablesTab = this->mainWidget->findChild<QWidget*>("executables");
 	Executables* executables = new Executables(this, NULL);
@@ -120,6 +125,11 @@ void App::onPlatformSelected(QListWidgetItem* item) {
 	// load all the executables of this platform and assign it to the widget.
 	executables->setExecutables(this->db.getExecutables(this->selectedPlatform.id));
 	this->executablesWidget = executables;
+
+	QWidget* settingsTab = this->mainWidget->findChild<QWidget*>("settings");
+	Settings* settings = new Settings(this, NULL);
+	settingsTab->layout()->addWidget(settings);
+	this->settingsWidget = settings;
 
 	// enable the tab
 	QWidget* tabWidget = this->mainWidget->findChild<QWidget*>("tabWidget");
