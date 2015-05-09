@@ -68,6 +68,9 @@ Executables::Executables(App* app, QWidget* parent = NULL) :
 	connect(rating, SIGNAL(textEdited(const QString&)), this, SLOT(onTextEdition()));
 	connect(description, SIGNAL(textChanged()), this, SLOT(onTextEdition()));
 
+	QPushButton* newExecutable = this->mainWidget->findChild<QPushButton*>("newExecutable");
+	connect(newExecutable, SIGNAL(clicked(bool)), this, SLOT(onNewExecutable()));
+
 	QPushButton* newResource = this->mainWidget->findChild<QPushButton*>("newResource");
 	connect(newResource, SIGNAL(clicked(bool)), this, SLOT(onNewResource()));
 
@@ -91,6 +94,21 @@ Executables::~Executables() {
 }
 
 void Executables::onNewExecutable() {
+	if (this->app->getSelectedPlatform().id == -1 || this->executables == NULL) {
+		return;
+	}
+
+	Executable executable = this->app->getDb()->createNewExecutable(this->app->getSelectedPlatform().id);
+
+	this->executables->append(executable);
+
+	// add the item in the list of executables
+	ItemWithId* item = new ItemWithId(executable.displayName, executable.id);
+	QListWidget* listResources = this->getListExecutables();
+	listResources->addItem(item);
+	listResources->setCurrentItem(item); // select the item
+
+	this->onExecutableSelected(item);
 }
 
 void Executables::onDeleteExecutable() {
@@ -125,6 +143,12 @@ void Executables::onNewResource() {
 	}
 	ExecutableResource res = this->app->getDb()->createNewResource(this->selectedExecutable.id);
 	this->selectedExecutable.resources.append(res);
+	// update the executable in the list of executable
+	for (int i = 0; i < this->executables->count(); i++) {
+		if (this->selectedExecutable.id == this->executables->at(i).id) {
+			this->executables->replace(i, this->selectedExecutable);
+		}
+	}
 
 	// add the item in the list of resources
 	QString text;
@@ -133,6 +157,7 @@ void Executables::onNewResource() {
 	QListWidget* listResources = this->getListResources();
 	listResources->addItem(item);
 	listResources->setCurrentItem(item); // select the item
+	this->onResourceSelected(item);
 
 	this->clearResource();
 
@@ -352,6 +377,12 @@ void Executables::onSaveResource() {
 	db->update(this->selectedResource);
 
 	this->updateInternalResource(this->selectedResource);
+	// update the executable in the list of executable
+	for (int i = 0; i < this->executables->count(); i++) {
+		if (this->selectedExecutable.id == this->executables->at(i).id) {
+			this->executables->replace(i, this->selectedExecutable);
+		}
+	}
 	
 	QPushButton* saveResource = this->mainWidget->findChild<QPushButton*>("saveResource");
 	saveResource->setEnabled(false);

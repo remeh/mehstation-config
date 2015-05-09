@@ -86,7 +86,7 @@ QList<Platform>* Database::getPlatforms() {
 // Returns nullptr if an error occurred.
 QList<Executable>* Database::getExecutables(int platformId) {
 	QSqlQuery q;
-	q.prepare("select id, display_name, filepath, description, genres, players, publisher, developer, release_date, rating FROM executable where platform_id = :platform_id ORDER BY display_name");
+	q.prepare("select id, platform_id, display_name, filepath, description, genres, players, publisher, developer, release_date, rating FROM executable where platform_id = :platform_id ORDER BY display_name");
 	q.bindValue(":platform_id", platformId);
 	q.exec();
 	QList<Executable>* result = new QList<Executable>;
@@ -99,6 +99,7 @@ QList<Executable>* Database::getExecutables(int platformId) {
 
 		QSqlRecord record = q.record();
 		QSqlField id = record.field("id");
+		QSqlField platformId = record.field("platform_id");
 		QSqlField display_name = record.field("display_name");
 		QSqlField filepath = record.field("filepath");
 		QSqlField description = record.field("description");
@@ -111,6 +112,7 @@ QList<Executable>* Database::getExecutables(int platformId) {
 
 		Executable e = Executable(
 						id.value().toInt(),
+						platformId.value().toInt(),
 						display_name.value().toString(),
 						filepath.value().toString(),
 						description.value().toString(),
@@ -201,6 +203,31 @@ void Database::deleteResource(int resourceId) {
 		qCritical() << "Error while deleting an executable resource:" << error.text();
 	}
 	q.clear();
+}
+
+Executable Database::createNewExecutable(int platformId) {
+	Executable executable;
+
+	QSqlQuery q;
+	q.prepare("insert into executable (platform_id, display_name) VALUES (:platform_id, \"New executable\")");
+	q.bindValue(":platform_id", platformId);
+	q.exec();
+	QSqlError error = q.lastError();
+	if (error.isValid()) {
+		QMessageBox msgBox(QMessageBox::Critical, "Error", QString("Can't create a new executable: ").append(error.text()));
+		msgBox.exec();
+		qCritical() << "Error while creating an executable:" << error.text();
+		return executable;
+	}
+
+	QVariant lastId = q.lastInsertId();
+	executable.id = lastId.toInt();
+	executable.platformId = platformId;
+	executable.displayName = "New executable";
+	qDebug() << "New executable id:" << executable.id;
+
+	q.clear();
+	return executable;
 }
 
 ExecutableResource Database::createNewResource(int executableId) {

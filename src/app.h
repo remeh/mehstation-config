@@ -21,6 +21,10 @@ class App : public QApplication {
 
 		Database* getDb() { return &(this->db); }
 
+		Platform getSelectedPlatform() {
+			return this->selectedPlatform;
+		}
+
 	private:
 		// Main window read from window.ui
 		QWidget* mainWidget;

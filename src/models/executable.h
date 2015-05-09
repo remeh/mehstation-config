@@ -8,10 +8,11 @@
 class Executable : public Model {
 	public:
 		Executable();
-		Executable(int id, QString displayName, QString filepath, QString description, QString genres, 
+		Executable(int id, int platformId, QString displayName, QString filepath, QString description, QString genres,
 				QString players, QString publisher, QString developer, QString releaseDate, QString rating);
 
 		int id;
+		int platformId;
 		QString displayName;
 		QString filepath;
 		QString description;

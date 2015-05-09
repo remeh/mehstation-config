@@ -19,6 +19,7 @@ class Database {
 		QList<Executable>* getExecutables(int platformId);
 		QList<ExecutableResource> getExecutableResources(int executableId);
 		ExecutableResource createNewResource(int executableId);
+		Executable createNewExecutable(int platformId);
 		void deleteExecutable(Executable executable);
 		void deleteResource(int resourceId);
 
