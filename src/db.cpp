@@ -165,6 +165,54 @@ QList<ExecutableResource> Database::getExecutableResources(int executableId) {
 	return result;
 }
 
+void Database::deletePlatform(Platform platform) {
+	if (platform.id == -1) {
+		return;
+	}
+
+	// first, delete all the resources
+	QSqlQuery q;
+	q.prepare("delete from executable_resource where executable_id IN (select executable.id from executable where platform_id = :platform_id)");
+	q.bindValue(":platform_id", platform.id);
+	q.exec();
+	QSqlError error = q.lastError();
+	if (error.isValid()) {
+		QMessageBox msgBox(QMessageBox::Critical, "Error", QString("Error while deleting all platform resources: ").append(error.text()));
+		msgBox.exec();
+		qCritical() << "Error while deleting all platform resources:" << error.text();
+		return;
+	}
+	q.clear();
+
+	// first, delete all the executables
+	QSqlQuery e;
+	e.prepare("delete from executable where platform_id = :platform_id");
+	e.bindValue(":platform_id", platform.id);
+	e.exec();
+	error = e.lastError();
+	if (error.isValid()) {
+		QMessageBox msgBox(QMessageBox::Critical, "Error", QString("Error while deleting all platform executables: ").append(error.text()));
+		msgBox.exec();
+		qCritical() << "Error while deleting all platform executables:" << error.text();
+		return;
+	}
+	e.clear();
+
+	// then, delete the platform
+	QSqlQuery p;
+	p.prepare("delete from platform where id = :platform_id");
+	p.bindValue(":platform_id", platform.id);
+	p.exec();
+	error = p.lastError();
+	if (error.isValid()) {
+		QMessageBox msgBox(QMessageBox::Critical, "Error", QString("Error while deleting the platform: ").append(error.text()));
+		msgBox.exec();
+		qCritical() << "Error while deleting the platform:" << error.text();
+		return;
+	}
+	p.clear();
+}
+
 void Database::deleteExecutable(Executable executable) {
 	if (executable.id == -1) {
 		return;
@@ -203,6 +251,30 @@ void Database::deleteResource(int resourceId) {
 		qCritical() << "Error while deleting an executable resource:" << error.text();
 	}
 	q.clear();
+}
+
+Platform Database::createNewPlatform(QString name) {
+	Platform p;
+
+	QSqlQuery q;
+	q.prepare("insert into platform (name) VALUES (:name)");
+	q.bindValue(":name", name);
+	q.exec();
+	QSqlError error = q.lastError();
+	if (error.isValid()) {
+		QMessageBox msgBox(QMessageBox::Critical, "Error", QString("Can't create a new platform: ").append(error.text()));
+		msgBox.exec();
+		qCritical() << "Error while creating a new platform:" << error.text();
+		return p;
+	}
+
+	QVariant lastId = q.lastInsertId();
+	p.id = lastId.toInt();
+	qDebug() << "New platform id:" << p.id;
+	p.name = name;
+
+	q.clear();
+	return p;
 }
 
 Executable Database::createNewExecutable(int platformId) {
@@ -252,6 +324,24 @@ ExecutableResource Database::createNewResource(int executableId) {
 
 	q.clear();
 	return res;
+}
+
+void Database::update(Platform platform) {
+	QSqlQuery q;
+	q.prepare("update platform set name = :name, command = :command, icon = :icon, background = :background where id = :id");
+	q.bindValue(":name", platform.name);
+	q.bindValue(":command", platform.command);
+	q.bindValue(":icon", platform.icon);
+	q.bindValue(":background", platform.background);
+	q.bindValue(":id", platform.id);
+	q.exec();
+	QSqlError error = q.lastError();
+	if (error.isValid()) {
+		QMessageBox msgBox(QMessageBox::Critical, "Error", QString("Can't update the platform: ").append(error.text()));
+		msgBox.exec();
+		qCritical() << "Error while updating a platform:" << error.text();
+	}
+	q.clear();
 }
 
 void Database::update(ExecutableResource resource) {

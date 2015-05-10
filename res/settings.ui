@@ -63,8 +63,17 @@
        <verstretch>1</verstretch>
       </sizepolicy>
      </property>
+     <property name="minimumSize">
+      <size>
+       <width>50</width>
+       <height>50</height>
+      </size>
+     </property>
      <property name="text">
       <string/>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
      </property>
     </widget>
    </item>
@@ -81,7 +90,7 @@
       <widget class="QLineEdit" name="background"/>
      </item>
      <item>
-      <widget class="QToolButton" name="backgroundIcon">
+      <widget class="QToolButton" name="backgroundButton">
        <property name="text">
         <string>...</string>
        </property>
@@ -97,8 +106,17 @@
        <verstretch>1</verstretch>
       </sizepolicy>
      </property>
+     <property name="minimumSize">
+      <size>
+       <width>50</width>
+       <height>50</height>
+      </size>
+     </property>
      <property name="text">
       <string/>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
      </property>
     </widget>
    </item>

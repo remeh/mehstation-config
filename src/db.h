@@ -20,11 +20,14 @@ class Database {
 		QList<ExecutableResource> getExecutableResources(int executableId);
 		ExecutableResource createNewResource(int executableId);
 		Executable createNewExecutable(int platformId);
+		Platform createNewPlatform(QString name);
 		void deleteExecutable(Executable executable);
 		void deleteResource(int resourceId);
+		void deletePlatform(Platform platform);
 
 		void update(Executable executable);
 		void update(ExecutableResource resource);
+		void update(Platform platform);
 
 	private:
 		QSqlDatabase db;

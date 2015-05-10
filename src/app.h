@@ -18,11 +18,27 @@ class App : public QApplication {
 
 		bool loadWindow();
 		void showWindow();
+		void updatePlatformList();
 
 		Database* getDb() { return &(this->db); }
 
-		Platform getSelectedPlatform() {
+		Platform& getSelectedPlatform() {
 			return this->selectedPlatform;
+		}
+		
+		void updateInternalPlatform(Platform platform) {
+			if (platform.id == -1) {
+				return;
+			}
+			if (this->platforms == NULL) {
+				return;
+			}
+			
+			for (int i = 0; i < this->platforms->count(); i++) {
+				if (this->platforms->at(i).id == platform.id) {
+					this->platforms->replace(i, platform);
+				}
+			}
 		}
 
 	private:
@@ -46,17 +62,19 @@ class App : public QApplication {
 		// Loaded executables.
 		QList<Executable>* executables;
 
-		// Currently selected platform.
-		Platform selectedPlatform;
-
 		// Returns the platform list widget.
 		inline QListWidget* getPlatformListWidget();
+
+		// Currently selected platform.
+		Platform selectedPlatform;
 
 	public slots:
 		void onClickQuit();
 		void onClickOpen();
 		void onPlatformSelected(QListWidgetItem* item);
 		void onFileSelected(const QString& filename);
+		void onNewPlatform();
+		void onDeletePlatform();
 		void onQuit();
 };
 

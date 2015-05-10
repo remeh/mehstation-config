@@ -16,7 +16,13 @@ class Settings : public QWidget {
 		QWidget* mainWidget;
 
 		void initValues();
+		void enableSave();
 
 	public slots:
 		void onChange();
+		void onSave();
+		void onIconButton();
+		void onIconSelected(const QString&);
+		void onBackgroundButton();
+		void onBackgroundSelected(const QString&);
 };

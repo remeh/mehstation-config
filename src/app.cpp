@@ -3,6 +3,8 @@
 #include <QLayout>
 #include <QListWidgetItem>
 #include <QMessageBox>
+#include <QPushButton>
+#include <QInputDialog>
 #include <QWidget>
 #include <QAction>
 #include <iostream>
@@ -59,6 +61,13 @@ bool App::loadWindow() {
 	QListWidget* listPlatforms = this->mainWidget->findChild<QListWidget*>("listPlatforms");
 	connect(listPlatforms, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(onPlatformSelected(QListWidgetItem*)));
 
+	QPushButton *deletePlatform = this->mainWidget->findChild<QPushButton*>("deletePlatform");
+	connect(deletePlatform, SIGNAL(clicked()), this, SLOT(onDeletePlatform()));
+
+	QPushButton *addPlatform = this->mainWidget->findChild<QPushButton*>("addPlatform");
+	connect(addPlatform, SIGNAL(clicked()), this, SLOT(onNewPlatform()));
+	addPlatform->setEnabled(true);
+
 	// NOTE We forces the use of the non-native dialog because with the native
 	// NOTE the slot onFileSelected is called two times. - remy
 	fileDialog.setOption(QFileDialog::DontUseNativeDialog, true);
@@ -83,6 +92,40 @@ void App::onClickQuit() {
 
 void App::onClickOpen() {
 	this->fileDialog.show();
+}
+
+void App::onNewPlatform() {
+	QString name = QInputDialog::getText(NULL, "Platform name ?", "Enter a name for the new platform");
+	if (name.length() == 0) {
+		return;
+	}
+	Platform p = this->getDb()->createNewPlatform(name);
+	this->platforms->append(p);
+	PlatformItem* item = new PlatformItem(p.name, p.id);
+	QListWidget* listPlatforms = this->getPlatformListWidget();
+	listPlatforms->addItem(item);
+	listPlatforms->setCurrentItem(item);
+	this->onPlatformSelected(item);
+}
+
+void App::onDeletePlatform() {
+	QMessageBox::StandardButton result = QMessageBox::question(NULL, "Deletion confirmation", "Are you sure to delete this platform along with all its executables and executable resources ? This can't be undone!");
+	if (result == QMessageBox::StandardButton::Yes) {
+		this->getDb()->deletePlatform(this->selectedPlatform);
+	}
+	QListWidget* listPlatforms = this->getPlatformListWidget();
+	delete listPlatforms->currentItem();
+	if (listPlatforms->currentItem() != NULL) {
+		this->onPlatformSelected(listPlatforms->currentItem());
+	}
+}
+
+void App::updatePlatformList() {
+	QListWidget* listPlatforms = this->getPlatformListWidget();
+	QListWidgetItem* item = listPlatforms->currentItem();
+	if (item != NULL) {
+		item->setText(this->selectedPlatform.name);
+	}
 }
 
 inline QListWidget* App::getPlatformListWidget() {
@@ -133,9 +176,10 @@ void App::onPlatformSelected(QListWidgetItem* item) {
 
 	// enable the tab
 	QWidget* tabWidget = this->mainWidget->findChild<QWidget*>("tabWidget");
-	if (tabWidget) {
-		tabWidget->setEnabled(true);
-	}	
+	tabWidget->setEnabled(true);
+
+	QPushButton *deletePlatform = this->mainWidget->findChild<QPushButton*>("deletePlatform");
+	deletePlatform->setEnabled(true);
 }
 
 // onFileSelected called when a database file has been selected.
