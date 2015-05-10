@@ -1,11 +1,12 @@
 #include <QList>
-#include <QWidget>
 #include <QListWidget>
 #include <QListWidgetItem>
+#include <QWidget>
 
 #include "app.h"
 
 class Settings : public QWidget {
+		Q_OBJECT
 	public:
 		Settings(App* app, QWidget* parent);
 		~Settings();
@@ -13,4 +14,9 @@ class Settings : public QWidget {
 	private:
 		App* app;
 		QWidget* mainWidget;
+
+		void initValues();
+
+	public slots:
+		void onChange();
 };

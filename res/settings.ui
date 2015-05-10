@@ -56,7 +56,13 @@
     </layout>
    </item>
    <item>
-    <widget class="QLabel" name="imageIcon">
+    <widget class="QLabel" name="iconImage">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+       <horstretch>0</horstretch>
+       <verstretch>1</verstretch>
+      </sizepolicy>
+     </property>
      <property name="text">
       <string/>
      </property>
@@ -84,7 +90,13 @@
     </layout>
    </item>
    <item>
-    <widget class="QLabel" name="imageBackground">
+    <widget class="QLabel" name="backgroundImage">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+       <horstretch>0</horstretch>
+       <verstretch>1</verstretch>
+      </sizepolicy>
+     </property>
      <property name="text">
       <string/>
      </property>

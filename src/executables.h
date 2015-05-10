@@ -1,7 +1,7 @@
 #include <QList>
-#include <QWidget>
 #include <QListWidget>
 #include <QListWidgetItem>
+#include <QWidget>
 
 #include "app.h"
 #include "models/executable.h"
