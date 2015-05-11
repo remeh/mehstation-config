@@ -73,6 +73,7 @@ class App : public QApplication {
 		void onClickOpen();
 		void onPlatformSelected(QListWidgetItem* item);
 		void onFileSelected(const QString& filename);
+		void onAbout();
 		void onNewPlatform();
 		void onDeletePlatform();
 		void onQuit();

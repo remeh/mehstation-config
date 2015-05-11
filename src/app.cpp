@@ -1,3 +1,4 @@
+#include <QAction>
 #include <QtUiTools>
 #include <QFileDialog>
 #include <QLayout>
@@ -6,7 +7,6 @@
 #include <QPushButton>
 #include <QInputDialog>
 #include <QWidget>
-#include <QAction>
 #include <iostream>
 #include "app.h"
 #include "db.h"
@@ -54,6 +54,9 @@ bool App::loadWindow() {
 	connect(actionOpen, SIGNAL(triggered()), this, SLOT(onClickOpen()));
 	connect(&fileDialog, SIGNAL(fileSelected(const QString&)), this, SLOT(onFileSelected(const QString&)));
 
+	QAction* actionAbout = this->mainWidget->findChild<QAction*>("actionAbout");
+	connect(actionAbout, SIGNAL(triggered()), this, SLOT(onAbout()));
+
 	/*
 	 * Platforms list
 	 */
@@ -88,6 +91,10 @@ void App::onQuit() {
 
 void App::onClickQuit() {
 	this->exit();
+}
+
+void App::onAbout() {
+	QMessageBox::about(NULL, "mehstation config", "<b>mehstation configuration</b><br>Interface to setup your mehstation<br>Bad code written by Rémy 'remeh' Mathieu");
 }
 
 void App::onClickOpen() {
