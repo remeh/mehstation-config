@@ -49,6 +49,8 @@ class Executables : public QWidget {
 		void onResourceFilepathClicked();
 		void onResourceFilepathSelected(const QString& filepath);
 		void onResourceSelected(QListWidgetItem* item);
+		void onFilepathSelected(const QString& filepath);
+		void onFilepathTool();
 		void onNewExecutable();
 		void onNewResource();
 		void onDeleteExecutable();

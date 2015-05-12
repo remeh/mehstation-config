@@ -68,6 +68,9 @@ Executables::Executables(App* app, QWidget* parent = NULL) :
 	connect(rating, SIGNAL(textEdited(const QString&)), this, SLOT(onTextEdition()));
 	connect(description, SIGNAL(textChanged()), this, SLOT(onTextEdition()));
 
+	QToolButton* filepathTool = this->mainWidget->findChild<QToolButton*>("filepathTool");
+	connect(filepathTool, SIGNAL(clicked(bool)), this, SLOT(onFilepathTool()));
+	
 	QPushButton* newExecutable = this->mainWidget->findChild<QPushButton*>("newExecutable");
 	connect(newExecutable, SIGNAL(clicked(bool)), this, SLOT(onNewExecutable()));
 
@@ -91,6 +94,19 @@ Executables::~Executables() {
 	if (this->executables != nullptr) {
 		delete this->executables;
 	}
+}
+
+void Executables::onFilepathTool() {
+	QFileDialog fileDialog(this);
+	fileDialog.setOption(QFileDialog::DontUseNativeDialog, true);
+	connect(&fileDialog, SIGNAL(fileSelected(const QString&)), this, SLOT(onFilepathSelected(const QString&)));
+	fileDialog.exec();	
+}
+
+void Executables::onFilepathSelected(const QString& filepath) {
+	QLineEdit* editFilepath = this->mainWidget->findChild<QLineEdit*>("editFilepath");
+	editFilepath->setText(filepath);
+	this->onTextEdition();
 }
 
 void Executables::onNewExecutable() {

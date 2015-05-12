@@ -88,6 +88,13 @@
          <item>
           <widget class="QLineEdit" name="editFilepath"/>
          </item>
+         <item>
+          <widget class="QToolButton" name="filepathTool">
+           <property name="text">
+            <string>...</string>
+           </property>
+          </widget>
+         </item>
         </layout>
        </item>
        <item>
