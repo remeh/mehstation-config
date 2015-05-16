@@ -2,6 +2,9 @@
 
 mehstation-config is a dedicated tool to configure [mehstation](https://github.com/remeh/mehstation)
 
+![mehstation-config screenshot](http://c.remy.io/GcSjQ3n5)
+
+
 ## How-to compile
 
 mehstation-config needs `Qt` to compile.
