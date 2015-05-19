@@ -6,44 +6,37 @@
 #include <QPushButton>
 #include <QToolButton>
 #include <QStackedLayout>
-#include <QUiLoader>
 #include <QWidget>
 
 #include "app.h"
 #include "settings.h"
+#include "ui_settings.h"
 
 Settings::Settings(App* app, QWidget* parent = NULL) :
 	QWidget(parent),
 	app(app),
 	mainWidget(nullptr) {
-	QUiLoader loader;
-
-	QFile uiFile("res/settings.ui");
-	uiFile.open(QFile::ReadOnly);
-
-	this->mainWidget = loader.load(&uiFile, NULL);
-	this->setLayout(new QStackedLayout());
-	this->layout()->addWidget(this->mainWidget);
+	this->ui.setupUi(this);
 
 	this->initValues();
 
-	QLineEdit* platform = this->mainWidget->findChild<QLineEdit*>("platform");
-	QLineEdit* command = this->mainWidget->findChild<QLineEdit*>("command");
-	QLineEdit* icon = this->mainWidget->findChild<QLineEdit*>("icon");
-	QLineEdit* background = this->mainWidget->findChild<QLineEdit*>("background");
+	QLineEdit* platform = this->ui.platform;
+	QLineEdit* command = this->ui.command;
+	QLineEdit* icon = this->ui.icon;
+	QLineEdit* background = this->ui.background;
 	connect(platform, SIGNAL(textEdited(const QString&)), this, SLOT(onChange()));
 	connect(command, SIGNAL(textEdited(const QString&)), this, SLOT(onChange()));
 	connect(icon, SIGNAL(textEdited(const QString&)), this, SLOT(onChange()));
 	connect(background, SIGNAL(textEdited(const QString&)), this, SLOT(onChange()));
 
-	QPushButton* save = this->mainWidget->findChild<QPushButton*>("save");
+	QPushButton* save = this->ui.save;
 	connect(save, SIGNAL(clicked()), this, SLOT(onSave()));
 	save->setEnabled(false);
 
-	QToolButton* iconButton = this->mainWidget->findChild<QToolButton*>("iconButton");
+	QToolButton* iconButton = this->ui.iconButton;
 	connect(iconButton, SIGNAL(clicked()), this, SLOT(onIconButton()));
 
-	QToolButton* backgroundButton = this->mainWidget->findChild<QToolButton*>("backgroundButton");
+	QToolButton* backgroundButton = this->ui.backgroundButton;
 	connect(backgroundButton, SIGNAL(clicked()), this, SLOT(onBackgroundButton()));
 }
 
@@ -55,17 +48,17 @@ void Settings::initValues() {
 		return;
 	}
 
-	QLineEdit* platform = this->mainWidget->findChild<QLineEdit*>("platform");
+	QLineEdit* platform = this->ui.platform;
 	platform->setText(this->app->getSelectedPlatform().name);
-	QLineEdit* command = this->mainWidget->findChild<QLineEdit*>("command");
+	QLineEdit* command = this->ui.command;
 	command->setText(this->app->getSelectedPlatform().command);
-	QLineEdit* icon = this->mainWidget->findChild<QLineEdit*>("icon");
+	QLineEdit* icon = this->ui.icon;
 	icon->setText(this->app->getSelectedPlatform().icon);
-	QLineEdit* background = this->mainWidget->findChild<QLineEdit*>("background");
+	QLineEdit* background = this->ui.background;
 	background->setText(this->app->getSelectedPlatform().background);
 
-	QLabel* iconImage = this->mainWidget->findChild<QLabel*>("iconImage");
-	QLabel* backgroundImage = this->mainWidget->findChild<QLabel*>("backgroundImage");
+	QLabel* iconImage = this->ui.iconImage;
+	QLabel* backgroundImage = this->ui.backgroundImage;
 
 	QImage image(icon->text());
 	QPixmap pixmap;
@@ -91,12 +84,12 @@ void Settings::onIconButton() {
 }
 
 void Settings::onIconSelected(const QString& filepath) {
-	QLineEdit* icon = this->mainWidget->findChild<QLineEdit*>("icon");
+	QLineEdit* icon = this->ui.icon;
 	icon->setText(filepath);
 	this->enableSave();
 
 	// refresh the image
-	QLabel* iconImage = this->mainWidget->findChild<QLabel*>("iconImage");
+	QLabel* iconImage = this->ui.iconImage;
 	QImage image(icon->text());
 	QPixmap pixmap;
 	pixmap.convertFromImage(image);
@@ -113,12 +106,12 @@ void Settings::onBackgroundButton() {
 }
 
 void Settings::onBackgroundSelected(const QString& filepath) {
-	QLineEdit* background = this->mainWidget->findChild<QLineEdit*>("background");
+	QLineEdit* background = this->ui.background;
 	background->setText(filepath);
 	this->enableSave();
 
 	// refresh the image
-	QLabel* backgroundImage = this->mainWidget->findChild<QLabel*>("backgroundImage");
+	QLabel* backgroundImage = this->ui.backgroundImage;
 	QImage image(background->text());
 	QPixmap pixmap;
 	pixmap.convertFromImage(image);
@@ -132,15 +125,15 @@ void Settings::onChange() {
 }
 
 void Settings::enableSave() {
-	QPushButton* save = this->mainWidget->findChild<QPushButton*>("save");
+	QPushButton* save = this->ui.save;
 	save->setEnabled(true);
 }
 
 void Settings::onSave() {
-	QLineEdit* platform = this->mainWidget->findChild<QLineEdit*>("platform");
-	QLineEdit* command = this->mainWidget->findChild<QLineEdit*>("command");
-	QLineEdit* icon = this->mainWidget->findChild<QLineEdit*>("icon");
-	QLineEdit* background = this->mainWidget->findChild<QLineEdit*>("background");
+	QLineEdit* platform = this->ui.platform;
+	QLineEdit* command = this->ui.command;
+	QLineEdit* icon = this->ui.icon;
+	QLineEdit* background = this->ui.background;
 	Platform& selectedPlatform= this->app->getSelectedPlatform();
 	selectedPlatform.name = platform->text();
 	selectedPlatform.command = command->text();
@@ -155,6 +148,6 @@ void Settings::onSave() {
 
 	this->app->updatePlatformList();
 
-	QPushButton* save = this->mainWidget->findChild<QPushButton*>("save");
+	QPushButton* save = this->ui.save;
 	save->setEnabled(false);
 }

@@ -5,6 +5,7 @@
 
 #include "app.h"
 #include "models/executable.h"
+#include "ui_executable.h"
 
 #define MEH_ROLE_EXEC_ID 1002
 
@@ -28,11 +29,11 @@ class Executables : public QWidget {
 		void clearResource();
 
 		QListWidget* getListResources() {
-			return this->mainWidget->findChild<QListWidget*>("listResources");
+			return this->ui.listResources;
 		}
 
 		QListWidget* getListExecutables() {
-			return this->mainWidget->findChild<QListWidget*>("listExecutables");
+			return this->ui.listExecutables;
 		}
 
 		App* app;
@@ -40,6 +41,7 @@ class Executables : public QWidget {
 		QList<Executable>* executables;
 		Executable selectedExecutable;
 		ExecutableResource selectedResource;
+		Ui::Executable ui;
 
 		// true when something has been modified.
 		bool modifying;

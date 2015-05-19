@@ -8,14 +8,17 @@
 #include <QInputDialog>
 #include <QWidget>
 #include <iostream>
+
 #include "app.h"
 #include "db.h"
 #include "executables.h"
 #include "settings.h"
 #include "models/platform.h"
+#include "ui_app.h"
 
 App::App(int & argc, char** argv) :
 	QApplication(argc,argv),
+	mainWidget(nullptr),
 	executablesWidget(nullptr),
 	settingsWidget(nullptr),
 	platforms(nullptr) {
@@ -30,44 +33,34 @@ App::~App() {
 }
 
 bool App::loadWindow() {
-	QUiLoader loader;
-
-	QFile file("res/window.ui");
-	file.open(QFile::ReadOnly);
-
-	this->mainWidget = loader.load(&file, NULL);
-
-	if (this->mainWidget == NULL) {
-		std::cerr << "[err] Can't find the UI file." << std::endl;
-		return false;
-	}
+	this->ui.setupUi(&this->mainWidget);
 
 	/*
 	 * Menu
 	 */
 
 	// Quit action
-	QAction* actionQuit = this->mainWidget->findChild<QAction*>("actionQuit");
+	QAction* actionQuit = this->ui.actionQuit;
 	connect(actionQuit, SIGNAL(triggered()), this, SLOT(onClickQuit()));
 	// Open action
-	QAction* actionOpen = this->mainWidget->findChild<QAction*>("actionOpen");
+	QAction* actionOpen = this->ui.actionOpen;
 	connect(actionOpen, SIGNAL(triggered()), this, SLOT(onClickOpen()));
 	connect(&fileDialog, SIGNAL(fileSelected(const QString&)), this, SLOT(onFileSelected(const QString&)));
 
-	QAction* actionAbout = this->mainWidget->findChild<QAction*>("actionAbout");
+	QAction* actionAbout = this->ui.actionAbout;
 	connect(actionAbout, SIGNAL(triggered()), this, SLOT(onAbout()));
 
 	/*
 	 * Platforms list
 	 */
 	// Select an entry
-	QListWidget* listPlatforms = this->mainWidget->findChild<QListWidget*>("listPlatforms");
+	QListWidget* listPlatforms = this->ui.listPlatforms;
 	connect(listPlatforms, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(onPlatformSelected(QListWidgetItem*)));
 
-	QPushButton *deletePlatform = this->mainWidget->findChild<QPushButton*>("deletePlatform");
+	QPushButton *deletePlatform = this->ui.deletePlatform;
 	connect(deletePlatform, SIGNAL(clicked()), this, SLOT(onDeletePlatform()));
 
-	QPushButton *addPlatform = this->mainWidget->findChild<QPushButton*>("addPlatform");
+	QPushButton *addPlatform = this->ui.addPlatform;
 	connect(addPlatform, SIGNAL(clicked()), this, SLOT(onNewPlatform()));
 	addPlatform->setEnabled(true);
 
@@ -75,14 +68,12 @@ bool App::loadWindow() {
 	// NOTE the slot onFileSelected is called two times. - remy
 	fileDialog.setOption(QFileDialog::DontUseNativeDialog, true);
 
-	file.close();
 	return true;
 }
 
 void App::showWindow() {
-	Q_ASSERT(this->mainWidget != NULL);
-	this->mainWidget->show();
-	this->mainWidget->raise();
+	this->mainWidget.show();
+	this->mainWidget.raise();
 }
 
 void App::onQuit() {
@@ -136,7 +127,7 @@ void App::updatePlatformList() {
 }
 
 inline QListWidget* App::getPlatformListWidget() {
-	return this->mainWidget->findChild<QListWidget*>("listPlatforms");
+	return this->ui.listPlatforms;
 }
 
 void App::onPlatformSelected(QListWidgetItem* item) {
@@ -169,23 +160,23 @@ void App::onPlatformSelected(QListWidgetItem* item) {
 		delete this->settingsWidget;
 	}
 
-	QWidget* executablesTab = this->mainWidget->findChild<QWidget*>("executables");
+	QWidget* executablesTab = this->ui.executables;
 	Executables* executables = new Executables(this, NULL);
 	executablesTab->layout()->addWidget(executables);
 	// load all the executables of this platform and assign it to the widget.
 	executables->setExecutables(this->db.getExecutables(this->selectedPlatform.id));
 	this->executablesWidget = executables;
 
-	QWidget* settingsTab = this->mainWidget->findChild<QWidget*>("settings");
+	QWidget* settingsTab = this->ui.settings;
 	Settings* settings = new Settings(this, NULL);
 	settingsTab->layout()->addWidget(settings);
 	this->settingsWidget = settings;
 
 	// enable the tab
-	QWidget* tabWidget = this->mainWidget->findChild<QWidget*>("tabWidget");
+	QWidget* tabWidget = this->ui.tabWidget;
 	tabWidget->setEnabled(true);
 
-	QPushButton *deletePlatform = this->mainWidget->findChild<QPushButton*>("deletePlatform");
+	QPushButton *deletePlatform = this->ui.deletePlatform;
 	deletePlatform->setEnabled(true);
 }
 

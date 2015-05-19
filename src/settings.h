@@ -3,6 +3,7 @@
 #include <QListWidgetItem>
 #include <QWidget>
 
+#include "ui_settings.h"
 #include "app.h"
 
 class Settings : public QWidget {
@@ -14,6 +15,7 @@ class Settings : public QWidget {
 	private:
 		App* app;
 		QWidget* mainWidget;
+		Ui::Settings ui;
 
 		void initValues();
 		void enableSave();

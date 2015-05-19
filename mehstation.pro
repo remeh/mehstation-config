@@ -35,3 +35,7 @@ HEADERS += src/app.h \
            src/models/executable.h \
            src/models/executable_resource.h \
            src/db.h
+
+FORMS += res/executable.ui \
+         res/app.ui \
+         res/settings.ui

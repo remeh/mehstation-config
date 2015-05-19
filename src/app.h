@@ -6,6 +6,7 @@
 #include <QString>
 #include <QVariant>
 
+#include "ui_app.h"
 #include "db.h"
 
 #define MEH_ROLE_PLATFORM_ITEM 1001
@@ -42,8 +43,10 @@ class App : public QApplication {
 		}
 
 	private:
+		Ui::App ui;
+
 		// Main window read from window.ui
-		QWidget* mainWidget;
+		QWidget mainWidget;
 
 		// Executables widget containing all the executables for a platform
 		QWidget* executablesWidget;
