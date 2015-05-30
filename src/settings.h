@@ -27,4 +27,6 @@ class Settings : public QWidget {
 		void onIconSelected(const QString&);
 		void onBackgroundButton();
 		void onBackgroundSelected(const QString&);
+		void onCommandButton();
+		void onCommandSelected(const QString& command);
 };

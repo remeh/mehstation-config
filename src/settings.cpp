@@ -36,8 +36,8 @@ Settings::Settings(App* app, QWidget* parent = NULL) :
 	QToolButton* iconButton = this->ui.iconButton;
 	connect(iconButton, SIGNAL(clicked()), this, SLOT(onIconButton()));
 
-	QToolButton* backgroundButton = this->ui.backgroundButton;
-	connect(backgroundButton, SIGNAL(clicked()), this, SLOT(onBackgroundButton()));
+	connect(this->ui.backgroundButton, SIGNAL(clicked()), this, SLOT(onBackgroundButton()));
+	connect(this->ui.commandButton, SIGNAL(clicked(bool)), this, SLOT(onCommandButton()));
 }
 
 Settings::~Settings() {
@@ -48,19 +48,15 @@ void Settings::initValues() {
 		return;
 	}
 
-	QLineEdit* platform = this->ui.platform;
-	platform->setText(this->app->getSelectedPlatform().name);
-	QLineEdit* command = this->ui.command;
-	command->setText(this->app->getSelectedPlatform().command);
-	QLineEdit* icon = this->ui.icon;
-	icon->setText(this->app->getSelectedPlatform().icon);
-	QLineEdit* background = this->ui.background;
-	background->setText(this->app->getSelectedPlatform().background);
+	this->ui.platform->setText(this->app->getSelectedPlatform().name);
+	this->ui.command->setText(this->app->getSelectedPlatform().command);
+	this->ui.icon->setText(this->app->getSelectedPlatform().icon);
+	this->ui.background->setText(this->app->getSelectedPlatform().background);
 
 	QLabel* iconImage = this->ui.iconImage;
 	QLabel* backgroundImage = this->ui.backgroundImage;
 
-	QImage image(icon->text());
+	QImage image(this->ui.icon->text());
 	QPixmap pixmap;
 	pixmap.convertFromImage(image);
 	if (!image.isNull()) {
@@ -68,13 +64,26 @@ void Settings::initValues() {
 		iconImage->setScaledContents(true);
 	}
 
-	image = QImage(background->text());
+	image = QImage(this->ui.background->text());
 	pixmap.convertFromImage(image);
 	if (!image.isNull()) {
 		backgroundImage->setPixmap(pixmap);
 		backgroundImage->setScaledContents(true);
 	}
 }
+
+void Settings::onCommandButton() {
+	QFileDialog fileDialog(this);
+	fileDialog.setOption(QFileDialog::DontUseNativeDialog, true);
+	connect(&fileDialog, SIGNAL(fileSelected(const QString&)), this, SLOT(onCommandSelected(const QString&)));
+	fileDialog.exec();	
+}
+
+void Settings::onCommandSelected(const QString& command) {
+	this->ui.command->setText(command);
+	this->enableSave();
+}
+
 
 void Settings::onIconButton() {
 	QFileDialog fileDialog(this);

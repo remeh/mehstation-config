@@ -32,7 +32,18 @@
     </widget>
    </item>
    <item>
-    <widget class="QLineEdit" name="command"/>
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <item>
+      <widget class="QLineEdit" name="command"/>
+     </item>
+     <item>
+      <widget class="QToolButton" name="commandButton">
+       <property name="text">
+        <string>...</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
    <item>
     <widget class="QLabel" name="label_3">

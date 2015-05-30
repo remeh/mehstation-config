@@ -42,45 +42,23 @@ Executables::Executables(App* app, QWidget* parent = NULL) :
 	connect(fanart, SIGNAL(clicked()), this, SLOT(onTypeChanged()));
 
 	// connect each edit values to a "modifying" flag
-	QLineEdit* name = this->ui.editName;
-	QLineEdit* filepath = this->ui.editFilepath;
-	QLineEdit* genres = this->ui.editGenres;
-	QLineEdit* publisher = this->ui.editPublisher;
-	QLineEdit* developer = this->ui.editDeveloper;
-	QLineEdit* releaseDate = this->ui.editReleaseDate;
-	QLineEdit* players = this->ui.editPlayers;
-	QLineEdit* rating = this->ui.editRating;
-	QTextEdit* description = this->ui.textDescription;
-	connect(name, SIGNAL(textEdited(const QString&)), this, SLOT(onTextEdition()));
-	connect(filepath, SIGNAL(textEdited(const QString&)), this, SLOT(onTextEdition()));
-	connect(genres, SIGNAL(textEdited(const QString&)), this, SLOT(onTextEdition()));
-	connect(publisher, SIGNAL(textEdited(const QString&)), this, SLOT(onTextEdition()));
-	connect(developer, SIGNAL(textEdited(const QString&)), this, SLOT(onTextEdition()));
-	connect(releaseDate, SIGNAL(textEdited(const QString&)), this, SLOT(onTextEdition()));
-	connect(players, SIGNAL(textEdited(const QString&)), this, SLOT(onTextEdition()));
-	connect(rating, SIGNAL(textEdited(const QString&)), this, SLOT(onTextEdition()));
-	connect(description, SIGNAL(textChanged()), this, SLOT(onTextEdition()));
+	connect(this->ui.editName, SIGNAL(textEdited(const QString&)), this, SLOT(onTextEdition()));
+	connect(this->ui.editFilepath, SIGNAL(textEdited(const QString&)), this, SLOT(onTextEdition()));
+	connect(this->ui.editGenres, SIGNAL(textEdited(const QString&)), this, SLOT(onTextEdition()));
+	connect(this->ui.editPublisher, SIGNAL(textEdited(const QString&)), this, SLOT(onTextEdition()));
+	connect(this->ui.editDeveloper, SIGNAL(textEdited(const QString&)), this, SLOT(onTextEdition()));
+	connect(this->ui.editReleaseDate, SIGNAL(textEdited(const QString&)), this, SLOT(onTextEdition()));
+	connect(this->ui.editPlayers, SIGNAL(textEdited(const QString&)), this, SLOT(onTextEdition()));
+	connect(this->ui.editRating, SIGNAL(textEdited(const QString&)), this, SLOT(onTextEdition()));
+	connect(this->ui.textDescription, SIGNAL(textChanged()), this, SLOT(onTextEdition()));
 
-	QToolButton* filepathTool = this->ui.filepathTool;
-	connect(filepathTool, SIGNAL(clicked(bool)), this, SLOT(onFilepathTool()));
-	
-	QPushButton* newExecutable = this->ui.newExecutable;
-	connect(newExecutable, SIGNAL(clicked(bool)), this, SLOT(onNewExecutable()));
-
-	QPushButton* newResource = this->ui.newResource;
-	connect(newResource, SIGNAL(clicked(bool)), this, SLOT(onNewResource()));
-
-	QPushButton* deleteResource = this->ui.deleteResource;
-	connect(deleteResource, SIGNAL(clicked(bool)), this, SLOT(onDeleteResource()));
-
-	QPushButton* deleteExecutable = this->ui.deleteExecutable;
-	connect(deleteExecutable, SIGNAL(clicked(bool)), this, SLOT(onDeleteExecutable()));
-
-	QPushButton* save = this->ui.save;
-	connect(save, SIGNAL(clicked(bool)), this, SLOT(onSave()));
-
-	QPushButton* saveResource = this->ui.saveResource;
-	connect(saveResource, SIGNAL(clicked(bool)), this, SLOT(onSaveResource()));
+	connect(this->ui.filepathTool, SIGNAL(clicked(bool)), this, SLOT(onFilepathTool()));
+	connect(this->ui.newExecutable, SIGNAL(clicked(bool)), this, SLOT(onNewExecutable()));
+	connect(this->ui.newResource, SIGNAL(clicked(bool)), this, SLOT(onNewResource()));
+	connect(this->ui.deleteResource, SIGNAL(clicked(bool)), this, SLOT(onDeleteResource()));
+	connect(this->ui.deleteExecutable, SIGNAL(clicked(bool)), this, SLOT(onDeleteExecutable()));
+	connect(this->ui.save, SIGNAL(clicked(bool)), this, SLOT(onSave()));
+	connect(this->ui.saveResource, SIGNAL(clicked(bool)), this, SLOT(onSaveResource()));
 }
 
 Executables::~Executables() {
