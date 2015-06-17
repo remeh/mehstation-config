@@ -53,7 +53,7 @@ bool Database::open(const QString& filename) {
 // Returns nullptr if an error occurred.
 QList<Platform>* Database::getPlatforms() {
 	QSqlQuery q;
-	q.exec("select id, name, command, icon, background FROM platform ORDER BY id");
+	q.exec("select id, name, command, icon, background FROM platform ORDER BY name");
 	QList<Platform>* result = new QList<Platform>;
 	while (q.next()) {
 		if (!q.isValid()) {
