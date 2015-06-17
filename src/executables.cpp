@@ -299,19 +299,19 @@ void Executables::onExecutableSelected(QListWidgetItem* item) {
 	QLineEdit* filepath = this->ui.editFilepath;
 	filepath->setText(e.filepath);
 	QLineEdit* genres = this->ui.editGenres;
-	genres->setText(e.genres);;
+	genres->setText(e.genres);
 	QLineEdit* publisher = this->ui.editPublisher;
-	publisher->setText(e.publisher);;
+	publisher->setText(e.publisher);
 	QLineEdit* developer = this->ui.editDeveloper;
-	developer->setText(e.publisher);;
+	developer->setText(e.publisher);
 	QLineEdit* releaseDate = this->ui.editReleaseDate;
-	releaseDate->setText(e.releaseDate);;
+	releaseDate->setText(e.releaseDate);
 	QLineEdit* players = this->ui.editPlayers;
-	players->setText(e.players);;
+	players->setText(e.players);
 	QLineEdit* rating = this->ui.editRating;
-	rating->setText(e.players);;
+	rating->setText(e.players);
 	QTextEdit* description = this->ui.textDescription;
-	description->setText(e.description);;
+	description->setText(e.description);
 	QPushButton* deleteExecutable = this->ui.deleteExecutable;
 
 	// set the resources

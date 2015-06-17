@@ -25,7 +25,8 @@ SOURCES += src/main.cpp \
            src/models/platform.cpp \
            src/models/executable.cpp \
            src/models/executable_resource.cpp \
-           src/db.cpp
+           src/db.cpp \
+           src/crawl/crawler.cpp
 
 HEADERS += src/app.h \
            src/executables.h \
@@ -34,7 +35,8 @@ HEADERS += src/app.h \
            src/models/platform.h \
            src/models/executable.h \
            src/models/executable_resource.h \
-           src/db.h
+           src/db.h \
+           src/crawl/crawler.h
 
 FORMS += res/executable.ui \
          res/app.ui \

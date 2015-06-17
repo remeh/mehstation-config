@@ -15,6 +15,7 @@
 #include "settings.h"
 #include "models/platform.h"
 #include "ui_app.h"
+#include "crawl/crawler.h"
 
 App::App(int & argc, char** argv) :
 	QApplication(argc,argv),
@@ -85,6 +86,8 @@ void App::onClickQuit() {
 }
 
 void App::onAbout() {
+	TheGamesDBCrawler crawler(this);
+	crawler.crawlGame("Double [!]");
 	QMessageBox::about(NULL, "mehstation config", "<b>mehstation configuration</b><br>Interface to setup your mehstation<br>Bad code written by Rémy 'remeh' Mathieu");
 }
 
