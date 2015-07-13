@@ -55,7 +55,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="basics">
       <attribute name="title">
@@ -292,6 +292,13 @@
                <widget class="QRadioButton" name="cover">
                 <property name="text">
                  <string>Cover</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QRadioButton" name="logo">
+                <property name="text">
+                 <string>Logo</string>
                 </property>
                </widget>
               </item>

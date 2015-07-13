@@ -40,6 +40,8 @@ Executables::Executables(App* app, QWidget* parent = NULL) :
 	connect(screenshot, SIGNAL(clicked()), this, SLOT(onTypeChanged()));
 	QRadioButton* fanart = this->ui.fanart;
 	connect(fanart, SIGNAL(clicked()), this, SLOT(onTypeChanged()));
+	QRadioButton* logo = this->ui.logo;
+	connect(logo, SIGNAL(clicked()), this, SLOT(onTypeChanged()));
 
 	// connect each edit values to a "modifying" flag
 	connect(this->ui.editName, SIGNAL(textEdited(const QString&)), this, SLOT(onTextEdition()));
@@ -182,16 +184,22 @@ void Executables::clearResource() {
 	QRadioButton* cover = this->ui.cover;
 	QRadioButton* screenshot = this->ui.screenshot;
 	QRadioButton* fanart = this->ui.fanart;
+	QRadioButton* logo = this->ui.logo;
 
 	cover->setAutoExclusive(false);
 	screenshot->setAutoExclusive(false);
 	fanart->setAutoExclusive(false);
+	logo->setAutoExclusive(false);
+
 	cover->setChecked(false);
 	screenshot->setChecked(false);
 	fanart->setChecked(false);
+	logo->setChecked(false);
+
 	cover->setAutoExclusive(true);
 	screenshot->setAutoExclusive(true);
 	fanart->setAutoExclusive(true);
+	logo->setAutoExclusive(true);
 
 	QLineEdit* resourceFilepath = this->ui.resourceFilepath;
 	resourceFilepath->setText("");
@@ -256,9 +264,11 @@ void Executables::reloadResourceInfo() {
 	QRadioButton* cover = this->ui.cover;
 	QRadioButton* screenshot = this->ui.screenshot;
 	QRadioButton* fanart = this->ui.fanart;
+	QRadioButton* logo = this->ui.logo;
 	cover->setChecked(false);
 	screenshot->setChecked(false);
 	fanart->setChecked(false);
+	logo->setChecked(false);
 	if (res.type == "cover") {
 		cover->setChecked(true);
 	}
@@ -267,6 +277,9 @@ void Executables::reloadResourceInfo() {
 	}
 	if (res.type == "fanart") {
 		fanart->setChecked(true);
+	}
+	if (res.type == "logo") {
+		logo->setChecked(true);
 	}
 
 	this->displayImage(res.filepath);
@@ -356,6 +369,7 @@ void Executables::onSaveResource() {
 	QRadioButton* cover = this->ui.cover;
 	QRadioButton* screenshot = this->ui.screenshot;
 	QRadioButton* fanart = this->ui.fanart;
+	QRadioButton* logo = this->ui.logo;
 	if (cover->isChecked()) {
 		this->selectedResource.type = "cover";
 	}
@@ -364,6 +378,9 @@ void Executables::onSaveResource() {
 	}
 	if (fanart->isChecked()) {
 		this->selectedResource.type = "fanart";
+	}
+	if (logo->isChecked()) {
+		this->selectedResource.type = "logo";
 	}
 
 	Database* db = this->app->getDb();
