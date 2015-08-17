@@ -34,14 +34,11 @@ Executables::Executables(App* app, QWidget* parent = NULL) :
 	QToolButton* resourceFilepathOpen = this->ui.resourceFilepathOpen;
 	connect(resourceFilepathOpen, SIGNAL(clicked()), this, SLOT(onResourceFilepathClicked()));
 
-	QRadioButton* cover = this->ui.cover;
-	connect(cover, SIGNAL(clicked()), this, SLOT(onTypeChanged()));
-	QRadioButton* screenshot = this->ui.screenshot;
-	connect(screenshot, SIGNAL(clicked()), this, SLOT(onTypeChanged()));
-	QRadioButton* fanart = this->ui.fanart;
-	connect(fanart, SIGNAL(clicked()), this, SLOT(onTypeChanged()));
-	QRadioButton* logo = this->ui.logo;
-	connect(logo, SIGNAL(clicked()), this, SLOT(onTypeChanged()));
+	connect(this->ui.cover, SIGNAL(clicked()), this, SLOT(onTypeChanged()));
+	connect(this->ui.screenshot, SIGNAL(clicked()), this, SLOT(onTypeChanged()));
+	connect(this->ui.fanart, SIGNAL(clicked()), this, SLOT(onTypeChanged()));
+	connect(this->ui.logo, SIGNAL(clicked()), this, SLOT(onTypeChanged()));
+	connect(this->ui.video, SIGNAL(clicked()), this, SLOT(onTypeChanged()));
 
 	// connect each edit values to a "modifying" flag
 	connect(this->ui.editName, SIGNAL(textEdited(const QString&)), this, SLOT(onTextEdition()));
@@ -185,21 +182,25 @@ void Executables::clearResource() {
 	QRadioButton* screenshot = this->ui.screenshot;
 	QRadioButton* fanart = this->ui.fanart;
 	QRadioButton* logo = this->ui.logo;
+	QRadioButton* video = this->ui.video;
 
 	cover->setAutoExclusive(false);
 	screenshot->setAutoExclusive(false);
 	fanart->setAutoExclusive(false);
 	logo->setAutoExclusive(false);
+	video->setAutoExclusive(false);
 
 	cover->setChecked(false);
 	screenshot->setChecked(false);
 	fanart->setChecked(false);
 	logo->setChecked(false);
+	video->setChecked(false);
 
 	cover->setAutoExclusive(true);
 	screenshot->setAutoExclusive(true);
 	fanart->setAutoExclusive(true);
 	logo->setAutoExclusive(true);
+	video->setAutoExclusive(true);
 
 	QLineEdit* resourceFilepath = this->ui.resourceFilepath;
 	resourceFilepath->setText("");
@@ -265,21 +266,24 @@ void Executables::reloadResourceInfo() {
 	QRadioButton* screenshot = this->ui.screenshot;
 	QRadioButton* fanart = this->ui.fanart;
 	QRadioButton* logo = this->ui.logo;
+	QRadioButton* video = this->ui.video;
+
 	cover->setChecked(false);
 	screenshot->setChecked(false);
 	fanart->setChecked(false);
 	logo->setChecked(false);
+	video->setChecked(false);
+
 	if (res.type == "cover") {
 		cover->setChecked(true);
-	}
-	if (res.type == "screenshot") {
+	} else if (res.type == "screenshot") {
 		screenshot->setChecked(true);
-	}
-	if (res.type == "fanart") {
+	} else if (res.type == "fanart") {
 		fanart->setChecked(true);
-	}
-	if (res.type == "logo") {
+	} else if (res.type == "logo") {
 		logo->setChecked(true);
+	} else if (res.type == "video") {
+		video->setChecked(true);
 	}
 
 	this->displayImage(res.filepath);
@@ -370,17 +374,18 @@ void Executables::onSaveResource() {
 	QRadioButton* screenshot = this->ui.screenshot;
 	QRadioButton* fanart = this->ui.fanart;
 	QRadioButton* logo = this->ui.logo;
+	QRadioButton* video = this->ui.video;
+
 	if (cover->isChecked()) {
 		this->selectedResource.type = "cover";
-	}
-	if (screenshot->isChecked()) {
+	} else if (screenshot->isChecked()) {
 		this->selectedResource.type = "screenshot";
-	}
-	if (fanart->isChecked()) {
+	} else if (fanart->isChecked()) {
 		this->selectedResource.type = "fanart";
-	}
-	if (logo->isChecked()) {
+	} else if (logo->isChecked()) {
 		this->selectedResource.type = "logo";
+	} else if (video->isChecked()) {
+		this->selectedResource.type = "video";
 	}
 
 	Database* db = this->app->getDb();

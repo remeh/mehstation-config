@@ -317,6 +317,13 @@
                </widget>
               </item>
               <item>
+               <widget class="QRadioButton" name="video">
+                <property name="text">
+                 <string>Video</string>
+                </property>
+               </widget>
+              </item>
+              <item>
                <widget class="QLabel" name="image">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
