@@ -87,7 +87,7 @@ class App : public QApplication {
 class PlatformItem : public QListWidgetItem {
 	public:
 		PlatformItem(const QString& text, int id)
-			: QListWidgetItem(text) {
+			: QListWidgetItem(text + " - " + QString::number(id)) {
 			this->id = id;			
 		}
 		void setData(int role, const QVariant& value) {
