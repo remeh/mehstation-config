@@ -16,6 +16,12 @@
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
     <widget class="QLabel" name="label">
+     <property name="font">
+      <font>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
      <property name="text">
       <string>Platform name</string>
      </property>
@@ -26,6 +32,12 @@
    </item>
    <item>
     <widget class="QLabel" name="label_2">
+     <property name="font">
+      <font>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
      <property name="text">
       <string>Command</string>
      </property>
@@ -46,7 +58,20 @@
     </layout>
    </item>
    <item>
+    <widget class="QLabel" name="label_5">
+     <property name="text">
+      <string>Warning: be sure to incldude the %exec flag where will be replaced the executable filepath. </string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QLabel" name="label_3">
+     <property name="font">
+      <font>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
      <property name="text">
       <string>Icon filepath</string>
      </property>
@@ -90,6 +115,12 @@
    </item>
    <item>
     <widget class="QLabel" name="label_4">
+     <property name="font">
+      <font>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
      <property name="text">
       <string>Background filepath</string>
      </property>
