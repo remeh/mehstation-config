@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>549</width>
-    <height>433</height>
+    <height>496</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -46,7 +46,14 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_3">
      <item>
-      <widget class="QLineEdit" name="command"/>
+      <widget class="QLineEdit" name="command">
+       <property name="toolTip">
+        <string>Set here the absolute filepath to the platform binary. Be sure to include the %exec% flag where will be replaced the executable filepath.</string>
+       </property>
+       <property name="whatsThis">
+        <string/>
+       </property>
+      </widget>
      </item>
      <item>
       <widget class="QToolButton" name="commandButton">
@@ -59,8 +66,20 @@
    </item>
    <item>
     <widget class="QLabel" name="label_5">
+     <property name="toolTip">
+      <string/>
+     </property>
+     <property name="toolTipDuration">
+      <number>-1</number>
+     </property>
+     <property name="statusTip">
+      <string/>
+     </property>
+     <property name="whatsThis">
+      <string/>
+     </property>
      <property name="text">
-      <string>Warning: be sure to incldude the %exec flag where will be replaced the executable filepath. </string>
+      <string>Warning: be sure to include the %exec flag where will be replaced the executable filepath. </string>
      </property>
     </widget>
    </item>
@@ -94,16 +113,19 @@
    <item>
     <widget class="QLabel" name="iconImage">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
        <horstretch>0</horstretch>
-       <verstretch>1</verstretch>
+       <verstretch>0</verstretch>
       </sizepolicy>
      </property>
      <property name="minimumSize">
       <size>
-       <width>50</width>
-       <height>50</height>
+       <width>125</width>
+       <height>125</height>
       </size>
+     </property>
+     <property name="autoFillBackground">
+      <bool>false</bool>
      </property>
      <property name="text">
       <string/>
@@ -143,9 +165,9 @@
    <item>
     <widget class="QLabel" name="backgroundImage">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
        <horstretch>0</horstretch>
-       <verstretch>1</verstretch>
+       <verstretch>0</verstretch>
       </sizepolicy>
      </property>
      <property name="minimumSize">
@@ -178,7 +200,7 @@
    <item>
     <widget class="QPushButton" name="save">
      <property name="text">
-      <string>Save</string>
+      <string>&amp;Save</string>
      </property>
     </widget>
    </item>

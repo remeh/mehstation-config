@@ -60,7 +60,7 @@ void Settings::initValues() {
 	QPixmap pixmap;
 	pixmap.convertFromImage(image);
 	if (!image.isNull()) {
-		iconImage->setPixmap(pixmap);
+		iconImage->setPixmap(pixmap.scaled(iconImage->width(),iconImage->height(),Qt::KeepAspectRatio));
 		iconImage->setScaledContents(true);
 	}
 
