@@ -74,7 +74,7 @@ class App : public QApplication {
 	public slots:
 		void onClickQuit();
 		void onClickOpen();
-		void onPlatformSelected(QListWidgetItem* item);
+		void onPlatformSelected(QListWidgetItem* item, QListWidgetItem*);
 		void onFileSelected(const QString& filename);
 		void onAbout();
 		void onNewPlatform();

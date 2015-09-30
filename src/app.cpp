@@ -55,7 +55,7 @@ bool App::loadWindow() {
 	 */
 	// Select an entry
 	QListWidget* listPlatforms = this->ui.listPlatforms;
-	connect(listPlatforms, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(onPlatformSelected(QListWidgetItem*)));
+	connect(listPlatforms, SIGNAL(currentItemChanged(QListWidgetItem*, QListWidgetItem*)), this, SLOT(onPlatformSelected(QListWidgetItem*, QListWidgetItem*)));
 
 	QPushButton *deletePlatform = this->ui.deletePlatform;
 	connect(deletePlatform, SIGNAL(clicked()), this, SLOT(onDeletePlatform()));
@@ -103,7 +103,7 @@ void App::onNewPlatform() {
 	QListWidget* listPlatforms = this->getPlatformListWidget();
 	listPlatforms->addItem(item);
 	listPlatforms->setCurrentItem(item);
-	this->onPlatformSelected(item);
+	this->onPlatformSelected(NULL, item);
 }
 
 void App::onDeletePlatform() {
@@ -114,7 +114,7 @@ void App::onDeletePlatform() {
 	QListWidget* listPlatforms = this->getPlatformListWidget();
 	delete listPlatforms->currentItem();
 	if (listPlatforms->currentItem() != NULL) {
-		this->onPlatformSelected(listPlatforms->currentItem());
+		this->onPlatformSelected(NULL, listPlatforms->currentItem());
 	}
 }
 
@@ -130,10 +130,12 @@ inline QListWidget* App::getPlatformListWidget() {
 	return this->ui.listPlatforms;
 }
 
-void App::onPlatformSelected(QListWidgetItem* item) {
+void App::onPlatformSelected(QListWidgetItem* item, QListWidgetItem*) {
 	if (item == NULL || platforms == NULL) {
 		return;
 	}
+
+	item->setSelected(true);
 
 	// look for the platform in the list of loaded platforms.
 	Platform p;
