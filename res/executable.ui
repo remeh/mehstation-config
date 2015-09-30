@@ -305,39 +305,43 @@
                </widget>
               </item>
               <item>
-               <widget class="QRadioButton" name="cover">
-                <property name="text">
-                 <string>&amp;Cover</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QRadioButton" name="logo">
-                <property name="text">
-                 <string>&amp;Logo</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QRadioButton" name="screenshot">
-                <property name="text">
-                 <string>Screensho&amp;t</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QRadioButton" name="fanart">
-                <property name="text">
-                 <string>&amp;Fanart</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QRadioButton" name="video">
-                <property name="text">
-                 <string>&amp;Video</string>
-                </property>
-               </widget>
+               <layout class="QHBoxLayout" name="horizontalLayout_11">
+                <item>
+                 <widget class="QRadioButton" name="screenshot">
+                  <property name="text">
+                   <string>Screensho&amp;t</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QRadioButton" name="fanart">
+                  <property name="text">
+                   <string>&amp;Fanart</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QRadioButton" name="cover">
+                  <property name="text">
+                   <string>&amp;Cover</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QRadioButton" name="logo">
+                  <property name="text">
+                   <string>&amp;Logo</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QRadioButton" name="video">
+                  <property name="text">
+                   <string>&amp;Video</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
               </item>
               <item>
                <widget class="QLabel" name="image">
