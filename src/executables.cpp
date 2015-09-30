@@ -147,9 +147,10 @@ void Executables::onNewResource() {
 
 	this->clearResource();
 
-	// activate the filepath selection
+	// activate and select the filepath selection
 	QToolButton* resourceOpen = this->ui.resourceFilepathOpen;
 	resourceOpen->setEnabled(true);
+	resourceOpen->setFocus(Qt::OtherFocusReason);
 }
 
 void Executables::onDeleteResource() {

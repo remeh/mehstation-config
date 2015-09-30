@@ -192,8 +192,20 @@
          <property name="enabled">
           <bool>false</bool>
          </property>
+         <property name="font">
+          <font>
+           <strikeout>false</strikeout>
+           <kerning>true</kerning>
+          </font>
+         </property>
          <property name="text">
-          <string>Save</string>
+          <string>&amp;Save</string>
+         </property>
+         <property name="default">
+          <bool>false</bool>
+         </property>
+         <property name="flat">
+          <bool>false</bool>
          </property>
         </widget>
        </item>
@@ -216,7 +228,7 @@
              <item>
               <widget class="QPushButton" name="newResource">
                <property name="text">
-                <string>New resource</string>
+                <string>&amp;New resource</string>
                </property>
               </widget>
              </item>
@@ -226,7 +238,7 @@
                 <bool>false</bool>
                </property>
                <property name="text">
-                <string>Delete resource</string>
+                <string>&amp;Delete resource</string>
                </property>
               </widget>
              </item>
@@ -295,35 +307,35 @@
               <item>
                <widget class="QRadioButton" name="cover">
                 <property name="text">
-                 <string>Cover</string>
+                 <string>&amp;Cover</string>
                 </property>
                </widget>
               </item>
               <item>
                <widget class="QRadioButton" name="logo">
                 <property name="text">
-                 <string>Logo</string>
+                 <string>&amp;Logo</string>
                 </property>
                </widget>
               </item>
               <item>
                <widget class="QRadioButton" name="screenshot">
                 <property name="text">
-                 <string>Screenshot</string>
+                 <string>Screensho&amp;t</string>
                 </property>
                </widget>
               </item>
               <item>
                <widget class="QRadioButton" name="fanart">
                 <property name="text">
-                 <string>Fanart</string>
+                 <string>&amp;Fanart</string>
                 </property>
                </widget>
               </item>
               <item>
                <widget class="QRadioButton" name="video">
                 <property name="text">
-                 <string>Video</string>
+                 <string>&amp;Video</string>
                 </property>
                </widget>
               </item>
@@ -355,7 +367,7 @@
                  <bool>false</bool>
                 </property>
                 <property name="text">
-                 <string>Save</string>
+                 <string>&amp;Save</string>
                 </property>
                </widget>
               </item>
