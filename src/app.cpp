@@ -21,12 +21,16 @@ App::App(int & argc, char** argv) :
 	mainWidget(nullptr),
 	executablesWidget(nullptr),
 	settingsWidget(nullptr),
+	scraping(nullptr), 
 	platforms(nullptr) {
 	setApplicationName("mehstation-config");
 	connect(this, SIGNAL(aboutToQuit()), SLOT(onQuit()));
 }
 
 App::~App() {
+	if (scraping != nullptr) {
+		delete scraping;
+	}
 	if (platforms != nullptr) {
 		delete platforms;
 	}
@@ -46,6 +50,8 @@ bool App::loadWindow() {
 	QAction* actionOpen = this->ui.actionOpen;
 	connect(actionOpen, SIGNAL(triggered()), this, SLOT(onClickOpen()));
 	connect(&fileDialog, SIGNAL(fileSelected(const QString&)), this, SLOT(onFileSelected(const QString&)));
+	// Scraping action
+	connect(this->ui.actionScraping, SIGNAL(triggered()), this, SLOT(onOpenScraping()));
 
 	QAction* actionAbout = this->ui.actionAbout;
 	connect(actionAbout, SIGNAL(triggered()), this, SLOT(onAbout()));
@@ -53,6 +59,7 @@ bool App::loadWindow() {
 	/*
 	 * Platforms list
 	 */
+
 	// Select an entry
 	QListWidget* listPlatforms = this->ui.listPlatforms;
 	connect(listPlatforms, SIGNAL(currentItemChanged(QListWidgetItem*, QListWidgetItem*)), this, SLOT(onPlatformSelected(QListWidgetItem*, QListWidgetItem*)));
@@ -68,6 +75,9 @@ bool App::loadWindow() {
 	// NOTE the slot onFileSelected is called two times. - remy
 	fileDialog.setOption(QFileDialog::DontUseNativeDialog, true);
 
+	// Prepares the scraping window
+	this->scraping = new Scraping(this);
+
 	return true;
 }
 
@@ -78,6 +88,12 @@ void App::showWindow() {
 
 void App::onQuit() {
 	std::cout << "Exiting mehstation-config." << std::endl;
+
+	// Closes all windows.
+	if (this->scraping != nullptr) {
+		delete this->scraping;
+		this->scraping = nullptr;
+	}
 }
 
 void App::onClickQuit() {
@@ -90,6 +106,11 @@ void App::onAbout() {
 
 void App::onClickOpen() {
 	this->fileDialog.show();
+}
+
+void App::onOpenScraping() {
+	scraping->show();
+	scraping->getPlatforms();
 }
 
 void App::onNewPlatform() {

@@ -22,6 +22,7 @@ SOURCES += src/main.cpp \
            src/app.cpp \
            src/executables.cpp \
            src/settings.cpp \
+           src/scraping.cpp \
            src/models/platform.cpp \
            src/models/executable.cpp \
            src/models/executable_resource.cpp \
@@ -30,6 +31,7 @@ SOURCES += src/main.cpp \
 HEADERS += src/app.h \
            src/executables.h \
            src/settings.h \
+           src/scraping.h \
            src/models/model.h \
            src/models/platform.h \
            src/models/executable.h \
@@ -38,4 +40,5 @@ HEADERS += src/app.h \
 
 FORMS += res/executable.ui \
          res/app.ui \
-         res/settings.ui
+         res/settings.ui \
+         res/scraping.ui

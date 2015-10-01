@@ -14,8 +14,7 @@
 
 Settings::Settings(App* app, QWidget* parent = NULL) :
 	QWidget(parent),
-	app(app),
-	mainWidget(nullptr) {
+	app(app) {
 	this->ui.setupUi(this);
 
 	this->initValues();

@@ -14,7 +14,6 @@ class Settings : public QWidget {
 
 	private:
 		App* app;
-		QWidget* mainWidget;
 		Ui::Settings ui;
 
 		void initValues();

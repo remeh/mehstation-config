@@ -34,6 +34,7 @@
       </property>
       <addaction name="actionOpen"/>
       <addaction name="separator"/>
+      <addaction name="actionScraping"/>
       <addaction name="actionQuit"/>
      </widget>
      <widget class="QMenu" name="menuHelp">
@@ -186,11 +187,11 @@
     <string>About</string>
    </property>
   </action>
-  <zorder>menubar</zorder>
-  <zorder>statusbar</zorder>
-  <zorder>tabWidget</zorder>
-  <zorder>tabWidget</zorder>
-  <zorder>centralwidget</zorder>
+  <action name="actionScraping">
+   <property name="text">
+    <string>Scra&amp;ping</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>

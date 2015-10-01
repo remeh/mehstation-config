@@ -8,6 +8,7 @@
 
 #include "ui_app.h"
 #include "db.h"
+#include "scraping.h"
 
 #define MEH_ROLE_PLATFORM_ITEM 1001
 
@@ -56,6 +57,9 @@ class App : public QApplication {
 		// The file dialog to open a database.
 		QFileDialog fileDialog;
 
+		// The scraping window.
+		Scraping *scraping;
+
 		// Database connection
 		Database db;
 
@@ -74,6 +78,7 @@ class App : public QApplication {
 	public slots:
 		void onClickQuit();
 		void onClickOpen();
+		void onOpenScraping();
 		void onPlatformSelected(QListWidgetItem* item, QListWidgetItem*);
 		void onFileSelected(const QString& filename);
 		void onAbout();
