@@ -79,7 +79,7 @@
       <string/>
      </property>
      <property name="text">
-      <string>Warning: be sure to include the %exec flag where will be replaced the executable filepath. </string>
+      <string>Warning: be sure to include the %exec% flag where will be replaced the executable filepath. </string>
      </property>
     </widget>
    </item>
