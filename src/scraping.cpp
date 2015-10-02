@@ -12,6 +12,8 @@ Scraping::Scraping(App* app) :
 	this->ui.setupUi(this);
 	connect(&platformsProcess, SIGNAL(readyReadStandardOutput()), this, SLOT(onPlatformsOutput()));
 	connect(this->ui.listWidget, SIGNAL(itemSelectionChanged()), this, SLOT(onPlatformSelection()));
+
+	this->ui.secondStep->hide();
 }
 
 Scraping::~Scraping() {
@@ -44,8 +46,8 @@ void Scraping::onPlatformsOutput() {
 void Scraping::onPlatformSelection() {
 	QList<QListWidgetItem *> items = this->ui.listWidget->selectedItems();
 	if (items.length() == 0) {
-		this->ui.start->setEnabled(false);
+		this->ui.next->setEnabled(false);
 	} else {
-		this->ui.start->setEnabled(true);
+		this->ui.next->setEnabled(true);
 	}
 }
