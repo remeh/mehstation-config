@@ -24,7 +24,11 @@ class Scraping : public QWidget {
 		QWidget *widget;
 
 	public slots:
+		void onDirectoryTool();
+		void onNext();
+		void onPrevious();
 		void onPlatformsOutput();
 		void onPlatformSelection();
+		void onDirectorySelected(const QString&);
 };
 
