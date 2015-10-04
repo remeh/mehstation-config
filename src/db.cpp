@@ -42,9 +42,15 @@ bool Database::open(const QString& filename) {
 		// TODO create the database.db file.
 		
 		opened = false;
+	} else {
+		this->filename = filename;
 	}
 
 	return opened;
+}
+
+void Database::close() {
+	this->db.close();
 }
 
 // getPlatforms returns all the platforms available in the

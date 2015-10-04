@@ -24,6 +24,10 @@ class App : public QApplication {
 
 		Database* getDb() { return &(this->db); }
 
+		QListWidgetItem* getCurrentItem() {
+			return this->ui.listPlatforms->currentItem();
+		}
+
 		Platform& getSelectedPlatform() {
 			return this->selectedPlatform;
 		}
@@ -92,7 +96,7 @@ class App : public QApplication {
 class PlatformItem : public QListWidgetItem {
 	public:
 		PlatformItem(const QString& text, int id)
-			: QListWidgetItem(text + " - " + QString::number(id)) {
+			: QListWidgetItem(text) {
 			this->id = id;			
 		}
 		void setData(int role, const QVariant& value) {

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>287</width>
-    <height>451</height>
+    <width>385</width>
+    <height>586</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -147,6 +147,24 @@
          </layout>
         </item>
         <item>
+         <widget class="QLabel" name="label_7">
+          <property name="font">
+           <font>
+            <kerning>true</kerning>
+           </font>
+          </property>
+          <property name="text">
+           <string>Directory where there is the executables for which you want to scrap description, resources, etc. and which will be auto-configured in mehstation.</string>
+          </property>
+          <property name="scaledContents">
+           <bool>false</bool>
+          </property>
+          <property name="wordWrap">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
          <widget class="QLabel" name="label_4">
           <property name="font">
            <font>
@@ -199,6 +217,47 @@
          </layout>
         </item>
         <item>
+         <widget class="QLabel" name="label_8">
+          <property name="text">
+           <string>File extensions of the executables to look for.</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_9">
+          <property name="font">
+           <font>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Output directory</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_7">
+          <item>
+           <widget class="QLineEdit" name="outputDirectory"/>
+          </item>
+          <item>
+           <widget class="QToolButton" name="toolOutputDirectory">
+            <property name="text">
+             <string>...</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_10">
+          <property name="text">
+           <string>The directory where the resources (screenshots, fanarts, ...) will be saved.</string>
+          </property>
+         </widget>
+        </item>
+        <item>
          <spacer name="verticalSpacer">
           <property name="orientation">
            <enum>Qt::Vertical</enum>
@@ -231,6 +290,39 @@
            </widget>
           </item>
          </layout>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QWidget" name="thirdStep" native="true">
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QLabel" name="label_6">
+        <property name="font">
+         <font>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Scraper output</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QListWidget" name="terminalOutput"/>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_6">
+        <item>
+         <widget class="QPushButton" name="stopScraping">
+          <property name="text">
+           <string>&amp;Stop scraping</string>
+          </property>
+         </widget>
         </item>
        </layout>
       </item>

@@ -15,20 +15,37 @@ class Scraping : public QWidget {
 		~Scraping();
 
 		void getPlatforms();
+		void setPlatformId(int p) {
+			this->platform = p;
+		}
 
 	private:
 		App* app;
 		Ui::Scraping ui;
 
 		QProcess platformsProcess;
+		QProcess scrapingProcess;
 		QWidget *widget;
+
+		int platform;
+
+		void startScraping();
+		void addExt(QString&, QString);
 
 	public slots:
 		void onDirectoryTool();
+		void onOutputDirTool();
+		void onCancel();
 		void onNext();
 		void onPrevious();
+		void onStart();
+		void onStopScraping();
 		void onPlatformsOutput();
+		void onScrapingOutput();
+		void onScrapingFinished();
 		void onPlatformSelection();
 		void onDirectorySelected(const QString&);
+		void onOutputDirSelected(const QString&);
+		void onChangeSettings();
 };
 

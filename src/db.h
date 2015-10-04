@@ -14,6 +14,9 @@ class Database {
 		~Database();
 
 		bool open(const QString& filename);
+		void close();
+
+		QString filename;
 
 		QList<Platform>* getPlatforms();
 		QList<Executable>* getExecutables(int platformId);

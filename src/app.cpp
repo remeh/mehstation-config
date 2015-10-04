@@ -164,6 +164,14 @@ void App::onPlatformSelected(QListWidgetItem* item, QListWidgetItem*) {
 	foreach (p, *platforms) {
 		if (p.id == item->data(MEH_ROLE_PLATFORM_ITEM).toInt()) {
 			clickedPlatform = p;
+
+			this->scraping->setPlatformId(p.id);
+			if (p.id >= 0) {
+				this->ui.actionScraping->setEnabled(true);
+			} else {
+				this->ui.actionScraping->setEnabled(false);
+			}
+
 			break;
 		}
 	}
@@ -172,6 +180,8 @@ void App::onPlatformSelected(QListWidgetItem* item, QListWidgetItem*) {
 	if (clickedPlatform.id == this->selectedPlatform.id)   {
 		return;
 	}
+
+	qDebug() << clickedPlatform.id;
 
 	this->selectedPlatform = clickedPlatform;
 
@@ -205,8 +215,6 @@ void App::onPlatformSelected(QListWidgetItem* item, QListWidgetItem*) {
 
 // onFileSelected called when a database file has been selected.
 void App::onFileSelected(const QString& filename) {
-	qDebug()  << filename;
-
 	QFile file(filename);
 	if (!file.exists()) {
 		QMessageBox msgBox(QMessageBox::Critical, "Error", "This file doesn't exist. Please select an existing database.");
@@ -217,9 +225,13 @@ void App::onFileSelected(const QString& filename) {
 	// open the database
 	db.open(filename);
 
+	if (this->platforms != nullptr) {
+		delete this->platforms;
+	}
 	QList<Platform>* platforms = db.getPlatforms();
 
 	QListWidget* listPlatforms = this->getPlatformListWidget();
+	listPlatforms->clear();
 
 	if (platforms != nullptr) {
 		// store the list pointer
@@ -233,3 +245,4 @@ void App::onFileSelected(const QString& filename) {
 		}
 	}
 }
+

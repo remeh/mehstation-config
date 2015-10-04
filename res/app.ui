@@ -188,6 +188,9 @@
    </property>
   </action>
   <action name="actionScraping">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Scra&amp;ping</string>
    </property>
