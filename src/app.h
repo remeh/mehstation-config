@@ -83,6 +83,7 @@ class App : public QApplication {
 		void onClickQuit();
 		void onClickOpen();
 		void onOpenScraping();
+		void onImport();
 		void onPlatformSelected(QListWidgetItem* item, QListWidgetItem*);
 		void onFileSelected(const QString& filename);
 		void onAbout();

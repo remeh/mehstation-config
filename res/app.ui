@@ -33,8 +33,9 @@
        <string>&amp;File</string>
       </property>
       <addaction name="actionOpen"/>
-      <addaction name="separator"/>
       <addaction name="actionScraping"/>
+      <addaction name="actionImport"/>
+      <addaction name="separator"/>
       <addaction name="actionQuit"/>
      </widget>
      <widget class="QMenu" name="menuHelp">
@@ -193,6 +194,14 @@
    </property>
    <property name="text">
     <string>Scra&amp;ping</string>
+   </property>
+  </action>
+  <action name="actionImport">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Import from EmulationStation</string>
    </property>
   </action>
  </widget>

@@ -52,6 +52,8 @@ bool App::loadWindow() {
 	connect(&fileDialog, SIGNAL(fileSelected(const QString&)), this, SLOT(onFileSelected(const QString&)));
 	// Scraping action
 	connect(this->ui.actionScraping, SIGNAL(triggered()), this, SLOT(onOpenScraping()));
+	// Import from ES
+	connect(this->ui.actionImport, SIGNAL(triggered()), this, SLOT(onImport()));
 
 	QAction* actionAbout = this->ui.actionAbout;
 	connect(actionAbout, SIGNAL(triggered()), this, SLOT(onAbout()));
@@ -113,6 +115,10 @@ void App::onOpenScraping() {
 	scraping->getPlatforms();
 }
 
+void App::onImport() {
+	// TODO(remy): show the import screen.
+}
+
 void App::onNewPlatform() {
 	QString name = QInputDialog::getText(NULL, "Platform name ?", "Enter a name for the new platform");
 	if (name.length() == 0) {
@@ -168,8 +174,10 @@ void App::onPlatformSelected(QListWidgetItem* item, QListWidgetItem*) {
 			this->scraping->setPlatformId(p.id);
 			if (p.id >= 0) {
 				this->ui.actionScraping->setEnabled(true);
+				this->ui.actionImport->setEnabled(true);
 			} else {
 				this->ui.actionScraping->setEnabled(false);
+				this->ui.actionImport->setEnabled(false);
 			}
 
 			break;
