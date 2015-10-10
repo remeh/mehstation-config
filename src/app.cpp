@@ -181,6 +181,8 @@ void App::onPlatformSelected(QListWidgetItem* item, QListWidgetItem*) {
 			clickedPlatform = p;
 
 			this->scraping->setPlatformId(p.id);
+			this->import->setPlatformId(p.id);
+
 			if (p.id >= 0) {
 				this->ui.actionScraping->setEnabled(true);
 				this->ui.actionImport->setEnabled(true);

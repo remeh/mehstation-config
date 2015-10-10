@@ -24,11 +24,16 @@ class Import : public QWidget {
 	private:
 		App* app;
 		Ui::importES ui;
+
+		QProcess importProcess;
+
 		int platform;
 
 	public slots:
+		void onStart();
 		void onFilepathTool();
 		void onSelectedFilepath(const QString&);
 		void onFilepathChange();
+		void onImportFinished();
 };
 

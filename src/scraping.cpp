@@ -89,7 +89,6 @@ void Scraping::onScrapingFinished() {
 	this->ui.stopScraping->setEnabled(false);
 	// reselect the entry in the platforms list
 	// NOTE(remy): if the user has selected another platform during the scraping process, this won't work
-	qDebug() << this->app->getCurrentItem();
 	this->app->getSelectedPlatform().id = -1;
 	this->app->onPlatformSelected(this->app->getCurrentItem(), NULL);
 }
