@@ -146,11 +146,11 @@ void App::onDeletePlatform() {
 	QMessageBox::StandardButton result = QMessageBox::question(NULL, "Deletion confirmation", "Are you sure to delete this platform along with all its executables and executable resources ? This can't be undone!");
 	if (result == QMessageBox::StandardButton::Yes) {
 		this->getDb()->deletePlatform(this->selectedPlatform);
-	}
-	QListWidget* listPlatforms = this->getPlatformListWidget();
-	delete listPlatforms->currentItem();
-	if (listPlatforms->currentItem() != NULL) {
-		this->onPlatformSelected(NULL, listPlatforms->currentItem());
+		QListWidget* listPlatforms = this->getPlatformListWidget();
+		delete listPlatforms->currentItem();
+		if (listPlatforms->currentItem() != NULL) {
+			this->onPlatformSelected(NULL, listPlatforms->currentItem());
+		}
 	}
 }
 
