@@ -22,6 +22,7 @@ App::App(int & argc, char** argv) :
 	executablesWidget(nullptr),
 	settingsWidget(nullptr),
 	scraping(nullptr), 
+	import(nullptr),
 	platforms(nullptr) {
 	setApplicationName("mehstation-config");
 	connect(this, SIGNAL(aboutToQuit()), SLOT(onQuit()));
@@ -80,6 +81,8 @@ bool App::loadWindow() {
 	// Prepares the scraping window
 	this->scraping = new Scraping(this);
 
+	this->import = new Import(this);
+
 	return true;
 }
 
@@ -95,6 +98,11 @@ void App::onQuit() {
 	if (this->scraping != nullptr) {
 		delete this->scraping;
 		this->scraping = nullptr;
+	}
+
+	if (this->import != nullptr) {
+		delete this->import;
+		this->import = nullptr;
 	}
 }
 
@@ -116,7 +124,8 @@ void App::onOpenScraping() {
 }
 
 void App::onImport() {
-	// TODO(remy): show the import screen.
+	import->show();
+	import->reset();
 }
 
 void App::onNewPlatform() {

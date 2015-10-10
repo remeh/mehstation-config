@@ -9,6 +9,7 @@
 #include "ui_app.h"
 #include "db.h"
 #include "scraping.h"
+#include "import.h"
 
 #define MEH_ROLE_PLATFORM_ITEM 1001
 
@@ -63,6 +64,9 @@ class App : public QApplication {
 
 		// The scraping window.
 		Scraping *scraping;
+
+		// The import window.
+		Import* import;
 
 		// Database connection
 		Database db;
