@@ -119,6 +119,12 @@ void Scraping::startScraping() {
 		addExt(extensions, this->ui.lineEdit->text());
 	}
 
+	// Checks whether or not it's a valid number
+	int maxWidth = this->ui.width->text().toInt();
+	if (maxWidth == 0) {
+		maxWidth = 768;
+	}
+
 	// close the db to not corrupt it.
 
 	this->app->getDb()->close();
@@ -143,10 +149,14 @@ void Scraping::startScraping() {
 				<< "-out-dir" << this->ui.outputDirectory->text()
 				<< "-meh-db" << this->app->getDb()->filename
 				<< "-meh-platform" << QString::number(this->platform)
+				<< "-w" << QString::number(maxWidth)
 				<< "-p" << platforms;
 
 	scrapingProcess.setArguments(arguments);
 	scrapingProcess.start();
+
+	this->ui.terminalOutput->addItem("Launching the scraping with:");
+	this->ui.terminalOutput->addItem("./mehtadata " + arguments.join(" "));
 }
 
 void Scraping::addExt(QString& exts, QString ext) {
