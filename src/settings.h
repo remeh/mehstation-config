@@ -28,4 +28,5 @@ class Settings : public QWidget {
 		void onBackgroundSelected(const QString&);
 		void onCommandButton();
 		void onCommandSelected(const QString& command);
+		void onViewSelected();
 };

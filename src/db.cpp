@@ -59,7 +59,7 @@ void Database::close() {
 // Returns nullptr if an error occurred.
 QList<Platform>* Database::getPlatforms() {
 	QSqlQuery q;
-	q.exec("select id, name, command, icon, background FROM platform ORDER BY name");
+	q.exec("select id, name, command, icon, background, type FROM platform ORDER BY name");
 	QList<Platform>* result = new QList<Platform>;
 	while (q.next()) {
 		if (!q.isValid()) {
@@ -74,13 +74,15 @@ QList<Platform>* Database::getPlatforms() {
 		QSqlField command = record.field("command");
 		QSqlField icon = record.field("icon");
 		QSqlField background = record.field("background");
+		QSqlField view = record.field("type");
 
 		result->append(Platform(
 						id.value().toInt(),
 						name.value().toString(),
 						command.value().toString(),
 						icon.value().toString(),
-						background.value().toString()
+						background.value().toString(),
+						view.value().toString()
 						));
 	}
 	q.clear();
@@ -334,12 +336,13 @@ ExecutableResource Database::createNewResource(int executableId) {
 
 void Database::update(Platform platform) {
 	QSqlQuery q;
-	q.prepare("update platform set name = :name, command = :command, icon = :icon, background = :background where id = :id");
+	q.prepare("update platform set name = :name, command = :command, icon = :icon, background = :background, type = :view where id = :id");
 	q.bindValue(":name", platform.name);
 	q.bindValue(":command", platform.command);
 	q.bindValue(":icon", platform.icon);
 	q.bindValue(":background", platform.background);
 	q.bindValue(":id", platform.id);
+	q.bindValue(":view", platform.view);
 	q.exec();
 	QSqlError error = q.lastError();
 	if (error.isValid()) {

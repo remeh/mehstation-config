@@ -37,6 +37,8 @@ Settings::Settings(App* app, QWidget* parent = NULL) :
 
 	connect(this->ui.backgroundButton, SIGNAL(clicked()), this, SLOT(onBackgroundButton()));
 	connect(this->ui.commandButton, SIGNAL(clicked(bool)), this, SLOT(onCommandButton()));
+	connect(this->ui.completeView, SIGNAL(clicked()), this, SLOT(onViewSelected()));
+	connect(this->ui.coverView, SIGNAL(clicked()), this, SLOT(onViewSelected()));
 }
 
 Settings::~Settings() {
@@ -69,6 +71,19 @@ void Settings::initValues() {
 		backgroundImage->setPixmap(pixmap);
 		backgroundImage->setScaledContents(true);
 	}
+
+	qDebug() << this->app->getSelectedPlatform().view ;
+	if (this->app->getSelectedPlatform().view == "complete") {
+		this->ui.completeView->setChecked(true);
+		this->ui.coverView->setChecked(false);
+	} else {
+		this->ui.coverView->setChecked(true);
+		this->ui.completeView->setChecked(false);
+	}
+}
+
+void Settings::onViewSelected() {
+	this->enableSave();
 }
 
 void Settings::onCommandButton() {
@@ -147,6 +162,12 @@ void Settings::onSave() {
 	selectedPlatform.command = command->text();
 	selectedPlatform.icon = icon->text();
 	selectedPlatform.background = background->text();
+
+	if (this->ui.completeView->isChecked()) {
+		selectedPlatform.view = "complete";
+	} else {
+		selectedPlatform.view = "cover";
+	}
 
 	// replace the platform in the list of platform of the app
 	this->app->updateInternalPlatform(selectedPlatform);
