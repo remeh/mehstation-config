@@ -72,7 +72,6 @@ void Settings::initValues() {
 		backgroundImage->setScaledContents(true);
 	}
 
-	qDebug() << this->app->getSelectedPlatform().view ;
 	if (this->app->getSelectedPlatform().view == "complete") {
 		this->ui.completeView->setChecked(true);
 		this->ui.coverView->setChecked(false);

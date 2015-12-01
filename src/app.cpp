@@ -200,8 +200,6 @@ void App::onPlatformSelected(QListWidgetItem* item, QListWidgetItem*) {
 		return;
 	}
 
-	qDebug() << clickedPlatform.id;
-
 	this->selectedPlatform = clickedPlatform;
 
 	// create the executable widget.
