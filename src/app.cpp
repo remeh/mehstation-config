@@ -1,5 +1,4 @@
 #include <QAction>
-#include <QtUiTools>
 #include <QFileDialog>
 #include <QLayout>
 #include <QListWidgetItem>

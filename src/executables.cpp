@@ -11,7 +11,6 @@
 #include <QRadioButton>
 #include <QStackedLayout>
 #include <QTextEdit>
-#include <QUiLoader>
 #include <QWidget>
 #include "app.h"
 #include "executables.h"

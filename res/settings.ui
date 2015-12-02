@@ -88,9 +88,6 @@
          <property name="toolTip">
           <string/>
          </property>
-         <property name="toolTipDuration">
-          <number>-1</number>
-         </property>
          <property name="statusTip">
           <string/>
          </property>
