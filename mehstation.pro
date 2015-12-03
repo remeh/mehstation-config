@@ -6,7 +6,7 @@
 #
 #-------------------------------------------------
 
-QT += core network gui widgets uitools sql
+QT += core network gui widgets sql
 # C++0x yay!
 QMAKE_CXXFLAGS += -std=c++0x
 LIBS +=
