@@ -72,12 +72,12 @@ void Settings::initValues() {
 		backgroundImage->setScaledContents(true);
 	}
 
-	if (this->app->getSelectedPlatform().view == "complete") {
-		this->ui.completeView->setChecked(true);
-		this->ui.coverView->setChecked(false);
-	} else {
+	if (this->app->getSelectedPlatform().view == "cover") {
 		this->ui.coverView->setChecked(true);
 		this->ui.completeView->setChecked(false);
+	} else {
+		this->ui.completeView->setChecked(true);
+		this->ui.coverView->setChecked(false);
 	}
 }
 
