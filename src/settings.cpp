@@ -56,6 +56,8 @@ void Settings::initValues() {
 
 	QLabel* iconImage = this->ui.iconImage;
 	QLabel* backgroundImage = this->ui.backgroundImage;
+	QLabel* completeImage = this->ui.completeImg;
+	QLabel* coverImage = this->ui.coverImg;
 
 	QImage image(this->ui.icon->text());
 	QPixmap pixmap;
@@ -70,6 +72,18 @@ void Settings::initValues() {
 	if (!image.isNull()) {
 		backgroundImage->setPixmap(pixmap);
 		backgroundImage->setScaledContents(true);
+	}
+
+	image = QImage("res/complete.png");
+	pixmap.convertFromImage(image);
+	if (!image.isNull()) {
+		completeImage->setPixmap(pixmap);
+	}
+
+	image = QImage("res/cover.png");
+	pixmap.convertFromImage(image);
+	if (!image.isNull()) {
+		coverImage->setPixmap(pixmap);
 	}
 
 	if (this->app->getSelectedPlatform().view == "cover") {
