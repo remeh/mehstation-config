@@ -1,0 +1,6 @@
+<RCC>
+  <qresource prefix="images">
+    <file>res/cover.png</file>
+    <file>res/complete.png</file>
+  </qresource>
+</RCC>
