@@ -45,3 +45,5 @@ FORMS += res/executable.ui \
          res/settings.ui \
          res/import.ui \
          res/scraping.ui
+
+RESOURCES += resources.qrc
