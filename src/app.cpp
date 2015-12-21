@@ -1,4 +1,5 @@
 #include <QAction>
+#include <QDebug>
 #include <QDir>
 #include <QFileDialog>
 #include <QFileInfo>
@@ -265,11 +266,19 @@ void App::onFileSelected(const QString& filename) {
 }
 
 QString App::mehtadataPath() {
-	QFileInfo current(QDir::currentPath() + "/mehtadata");
+	QString mehtadata("/mehtadata");
+
+#ifdef Q_OS_WIN
+	mehtadata += ".exe";
+#endif
+
+	QFileInfo current(QDir::currentPath() + mehtadata);
 
 	if (current.exists() && current.isFile()) {
-		return "./mehtadata";
+		return QDir::currentPath() + mehtadata;
 	}
+
+	qDebug() << QString( QDir::currentPath() + mehtadata );
 
 #ifdef Q_OS_LINUX
 	current = QFileInfo("/usr/bin/mehtadata");
