@@ -1,4 +1,5 @@
 #include <QAction>
+#include <QDir>
 #include <QFileDialog>
 #include <QFileInfo>
 #include <QLayout>
@@ -264,7 +265,7 @@ void App::onFileSelected(const QString& filename) {
 }
 
 QString App::mehtadataPath() {
-	QFileInfo current("./mehtadata");
+	QFileInfo current(QDir::currentPath() + "/mehtadata");
 
 	if (current.exists() && current.isFile()) {
 		return "./mehtadata";
