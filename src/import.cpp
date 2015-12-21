@@ -1,6 +1,7 @@
 #include <QDebug>
 #include <QFileDialog>
 #include <QListWidgetItem>
+#include <QMessageBox>
 #include <QProcess>
 #include <QWidget>
 
@@ -53,9 +54,17 @@ void Import::onStart() {
 
 	this->app->getDb()->close();
 
+
+	QString mehtadataPath = app->mehtadataPath();
+
+	if (mehtadataPath.length() == 0) {
+		QMessageBox::critical(NULL, "Can't find mehtadata", "The import can't be executed because the exe mehtadata is not found.");
+		return;
+	}
+
 	// start the import
 
-	importProcess.setProgram("./mehtadata");
+	importProcess.setProgram(mehtadataPath);
 	QStringList arguments;
 	arguments	<<"-es" << this->ui.filepath->text()
 				<< "-meh-db" << this->app->getDb()->filename

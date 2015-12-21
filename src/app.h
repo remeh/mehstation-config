@@ -48,6 +48,8 @@ class App : public QApplication {
 			}
 		}
 
+		QString mehtadataPath();
+
 	private:
 		Ui::App ui;
 

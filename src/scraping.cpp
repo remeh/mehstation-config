@@ -1,5 +1,6 @@
 #include <QDebug>
 #include <QFileDialog>
+#include <QMessageBox>
 #include <QListWidgetItem>
 #include <QProcess>
 #include <QWidget>
@@ -48,8 +49,15 @@ void Scraping::getPlatforms() {
 	this->ui.thirdStep->hide();
 
 	this->ui.listWidget->clear();
+
+	QString mehtadataPath = app->mehtadataPath();
+
+	if (mehtadataPath.length() == 0) {
+		QMessageBox::critical(NULL, "Can't find mehtadata", "The scraping feature will not be available because the exe mehtadata is not found.");
+		return;
+	}
 	
-	platformsProcess.setProgram("./mehtadata");
+	platformsProcess.setProgram(mehtadataPath);
 	platformsProcess.setArguments(QStringList("-platforms"));
 	platformsProcess.start();
 }

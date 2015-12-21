@@ -1,5 +1,6 @@
 #include <QAction>
 #include <QFileDialog>
+#include <QFileInfo>
 #include <QLayout>
 #include <QListWidgetItem>
 #include <QMessageBox>
@@ -262,3 +263,20 @@ void App::onFileSelected(const QString& filename) {
 	}
 }
 
+QString App::mehtadataPath() {
+	QFileInfo current("./mehtadata");
+
+	if (current.exists() && current.isFile()) {
+		return "./mehtadata";
+	}
+
+#ifdef Q_OS_LINUX
+	current = QFileInfo("/usr/bin/mehtadata");
+
+	if (current.exists() && current.isFile()) {
+		return "/usr/bin/mehtadata";
+	}
+#endif
+
+	return "";
+}
