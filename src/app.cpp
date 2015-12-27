@@ -9,6 +9,7 @@
 #include <QPushButton>
 #include <QInputDialog>
 #include <QWidget>
+#include <QStandardPaths>
 #include <iostream>
 
 #include "app.h"
@@ -79,6 +80,7 @@ bool App::loadWindow() {
 	// NOTE We forces the use of the non-native dialog because with the native
 	// NOTE the slot onFileSelected is called two times. - remy
 	fileDialog.setOption(QFileDialog::DontUseNativeDialog, true);
+	fileDialog.setDirectory(lookForConfPath());
 
 	// Prepares the scraping window
 	this->scraping = new Scraping(this);
@@ -86,6 +88,18 @@ bool App::loadWindow() {
 	this->import = new Import(this);
 
 	return true;
+}
+
+QString App::lookForConfPath() {
+	QStringList list = QStandardPaths::standardLocations(QStandardPaths::ConfigLocation);
+	for (int i = 0; i < list.length(); i++) {
+		QString mehstation = list[i] + "/mehstation";
+		QDir dir = QDir(mehstation);
+		if (dir.exists()) {
+			return mehstation;
+		}
+	}
+	return "";
 }
 
 void App::showWindow() {

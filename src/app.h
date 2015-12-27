@@ -85,6 +85,8 @@ class App : public QApplication {
 		// Currently selected platform.
 		Platform selectedPlatform;
 
+		QString lookForConfPath();
+
 	public slots:
 		void onClickQuit();
 		void onClickOpen();
