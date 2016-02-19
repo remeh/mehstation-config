@@ -91,7 +91,7 @@ bool App::loadWindow() {
 }
 
 QString App::lookForConfPath() {
-	QStringList list = QStandardPaths::standardLocations(QStandardPaths::ConfigLocation);
+	QStringList list = QStandardPaths::standardLocations(QStandardPaths::GenericConfigLocation);
 	for (int i = 0; i < list.length(); i++) {
 		QString mehstation = list[i] + "/mehstation";
 		QDir dir = QDir(mehstation);
