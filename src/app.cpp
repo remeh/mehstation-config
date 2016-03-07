@@ -79,6 +79,7 @@ bool App::loadWindow() {
 
 	// NOTE We forces the use of the non-native dialog because with the native
 	// NOTE the slot onFileSelected is called two times. - remy
+	fileDialog.setNameFilter(tr("mehstation DB (*.db)")); // limit to .db files.
 	fileDialog.setOption(QFileDialog::DontUseNativeDialog, true);
 	fileDialog.setDirectory(lookForConfPath());
 
