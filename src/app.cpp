@@ -75,7 +75,6 @@ bool App::loadWindow() {
 
 	QPushButton *addPlatform = this->ui.addPlatform;
 	connect(addPlatform, SIGNAL(clicked()), this, SLOT(onNewPlatform()));
-	addPlatform->setEnabled(true);
 
 	// NOTE We forces the use of the non-native dialog because with the native
 	// NOTE the slot onFileSelected is called two times. - remy
@@ -243,8 +242,8 @@ void App::onPlatformSelected(QListWidgetItem* item, QListWidgetItem*) {
 	QWidget* tabWidget = this->ui.tabWidget;
 	tabWidget->setEnabled(true);
 
-	QPushButton *deletePlatform = this->ui.deletePlatform;
-	deletePlatform->setEnabled(true);
+	this->ui.addPlatform->setEnabled(true);
+	this->ui.deletePlatform->setEnabled(true);
 }
 
 // onFileSelected called when a database file has been selected.
