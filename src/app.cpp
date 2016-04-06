@@ -87,7 +87,20 @@ bool App::loadWindow() {
 
 	this->import = new Import(this);
 
+	this->tryAutomaticLoad();
+
 	return true;
+}
+
+// tryAutomaticLoad looks if the database file is available
+// in the configuration path and if it's the case, it opens it.
+void App::tryAutomaticLoad() {
+	QString filepath = this->lookForConfPath() + "/database.db";
+
+	QFile file(filepath);
+	if (file.exists()) {
+		this->onFileSelected(filepath);
+	}
 }
 
 QString App::lookForConfPath() {

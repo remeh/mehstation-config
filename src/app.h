@@ -87,6 +87,8 @@ class App : public QApplication {
 
 		QString lookForConfPath();
 
+		void tryAutomaticLoad();
+
 	public slots:
 		void onClickQuit();
 		void onClickOpen();
