@@ -127,7 +127,7 @@ void App::onClickQuit() {
 }
 
 void App::onAbout() {
-	QMessageBox::about(NULL, "mehstation config", "<b>mehstation configuration</b><br>Interface to setup your mehstation<br>Bad code written by Rémy 'remeh' Mathieu");
+	QMessageBox::about(NULL, "mehstation config", "<b>mehstation configuration</b><br>Interface to setup your mehstation<br>Code written way too fast by Rémy 'remeh' Mathieu");
 }
 
 void App::onClickOpen() {
@@ -277,6 +277,8 @@ void App::onFileSelected(const QString& filename) {
 			listPlatforms->addItem(item);
 		}
 	}
+
+	this->ui.addPlatform->setEnabled(true);
 }
 
 QString App::mehtadataPath() {
