@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>WizardPage</class>
- <widget class="QWizardPage" name="WizardPage">
+ <class>PlatformWizard1</class>
+ <widget class="QWizardPage" name="PlatformWizard1">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>516</width>
+    <width>591</width>
     <height>300</height>
    </rect>
   </property>
