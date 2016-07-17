@@ -24,6 +24,7 @@ SOURCES += src/main.cpp \
            src/settings.cpp \
            src/scraping.cpp \
            src/import.cpp \
+           src/platform_wizard.cpp \
            src/models/platform.cpp \
            src/models/executable.cpp \
            src/models/executable_resource.cpp \
@@ -34,6 +35,7 @@ HEADERS += src/app.h \
            src/settings.h \
            src/scraping.h \
            src/import.h \
+           src/platform_wizard.h \
            src/models/model.h \
            src/models/platform.h \
            src/models/executable.h \
@@ -44,6 +46,9 @@ FORMS += res/executable.ui \
          res/app.ui \
          res/settings.ui \
          res/import.ui \
-         res/scraping.ui
+         res/scraping.ui \
+         res/wizard_platform/wizard_platform.ui \
+         res/wizard_platform/wizard_platform_1.ui \
+         res/wizard_platform/wizard_platform_2.ui
 
 RESOURCES += resources.qrc

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>PlatformWizard1</class>
+ <widget class="QWizardPage" name="PlatformWizard1">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>591</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>WizardPage</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This wizard will go through each step needed for the &lt;span style=&quot; font-weight:600;&quot;&gt;creation a platform&lt;/span&gt;.&lt;/p&gt;&lt;p&gt;In mehtation, a platform is something launching executable.&lt;br/&gt;After the platform creation, you'll be able to configure the executables runnable by this platform.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

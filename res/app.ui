@@ -136,17 +136,17 @@
          <property name="currentIndex">
           <number>0</number>
          </property>
-         <widget class="QWidget" name="executables">
-          <attribute name="title">
-           <string>Executables</string>
-          </attribute>
-          <layout class="QVBoxLayout" name="verticalLayout"/>
-         </widget>
          <widget class="QWidget" name="settings">
           <attribute name="title">
            <string>Platform settings</string>
           </attribute>
           <layout class="QVBoxLayout" name="verticalLayout_5"/>
+         </widget>
+         <widget class="QWidget" name="executables">
+          <attribute name="title">
+           <string>Executables</string>
+          </attribute>
+          <layout class="QVBoxLayout" name="verticalLayout"/>
          </widget>
         </widget>
        </item>
