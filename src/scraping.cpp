@@ -151,8 +151,7 @@ void Scraping::startScraping() {
 
 	scrapingProcess.setProgram("./mehtadata");
 	QStringList arguments;
-	arguments	<< "-dest" << "mehstation"
-				<<	"-ext" << extensions
+	arguments	<<	"-ext" << extensions
 				<< "-in-dir" << this->ui.executablesDir->text()
 				<< "-out-dir" << this->ui.outputDirectory->text()
 				<< "-meh-db" << this->app->getDb()->filename
