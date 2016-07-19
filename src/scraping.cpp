@@ -2,6 +2,7 @@
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QListWidgetItem>
+#include <QProcessEnvironment>
 #include <QProcess>
 #include <QWidget>
 
@@ -151,14 +152,16 @@ void Scraping::startScraping() {
 
 	scrapingProcess.setProgram("./mehtadata");
 	QStringList arguments;
-	arguments	<< "-dest" << "mehstation"
-				<<	"-ext" << extensions
-				<< "-in-dir" << this->ui.executablesDir->text()
-				<< "-out-dir" << this->ui.outputDirectory->text()
-				<< "-meh-db" << this->app->getDb()->filename
-				<< "-meh-platform" << QString::number(this->platform)
-				<< "-w" << QString::number(maxWidth)
-				<< "-p" << platforms;
+	arguments << "-meh-db" << this->app->getDb()->filename;
+
+	QProcessEnvironment env;
+	env.insert("PLATFORM", platforms) ;
+	env.insert("PLATFORM_ID", QString::number(this->platform));
+	env.insert("DIR", this->ui.executablesDir->text());
+	env.insert("EXTS", extensions);
+	env.insert("OUTPUT", this->ui.outputDirectory->text());
+	env.insert("WIDTH", QString::number(maxWidth));
+	scrapingProcess.setProcessEnvironment(env);
 
 	scrapingProcess.setArguments(arguments);
 	scrapingProcess.start();

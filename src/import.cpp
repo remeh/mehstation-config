@@ -66,9 +66,13 @@ void Import::onStart() {
 
 	importProcess.setProgram(mehtadataPath);
 	QStringList arguments;
-	arguments	<<"-es" << this->ui.filepath->text()
-				<< "-meh-db" << this->app->getDb()->filename
-				<< "-meh-platform" << QString::number(this->platform);
+	arguments << "-meh-db" << this->app->getDb()->filename;
+
+	QProcessEnvironment env;
+	env.insert("PLATFORM_ID", QString::number(this->platform));
+	env.insert("GAMELIST", this->ui.filepath->text()) ;
+	importProcess.setProcessEnvironment(env);
+
 	importProcess.setArguments(arguments);
 	importProcess.start();
 	qDebug() << "OK";
