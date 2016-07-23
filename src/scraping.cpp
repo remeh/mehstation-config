@@ -59,7 +59,7 @@ void Scraping::getPlatforms() {
 	}
 	
 	platformsProcess.setProgram(mehtadataPath);
-	platformsProcess.setArguments(QStringList("-platforms"));
+	platformsProcess.setArguments(QStringList("-show-platforms"));
 	platformsProcess.start();
 }
 
@@ -152,7 +152,7 @@ void Scraping::startScraping() {
 
 	scrapingProcess.setProgram("./mehtadata");
 	QStringList arguments;
-	arguments << "-meh-db" << this->app->getDb()->filename;
+	arguments << "-db" << this->app->getDb()->filename << "-scrape";
 
 	QProcessEnvironment env;
 	env.insert("PLATFORM", platforms) ;
@@ -167,6 +167,7 @@ void Scraping::startScraping() {
 	scrapingProcess.start();
 
 	this->ui.terminalOutput->addItem("Launching the scraping with:");
+	this->ui.terminalOutput->addItem(env.toStringList().join(" "));
 	this->ui.terminalOutput->addItem("./mehtadata " + arguments.join(" "));
 }
 
