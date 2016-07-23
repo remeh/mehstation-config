@@ -66,7 +66,7 @@ void Import::onStart() {
 
 	importProcess.setProgram(mehtadataPath);
 	QStringList arguments;
-	arguments << "-db" << this->app->getDb()->filename;
+	arguments << "-db" << this->app->getDb()->filename << "-import-es";
 
 	QProcessEnvironment env;
 	env.insert("PLATFORM_ID", QString::number(this->platform));
